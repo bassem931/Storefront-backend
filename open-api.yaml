@@ -1,0 +1,260 @@
+open api: 3.1.0
+info:
+  title: storeFront-backend
+  description: |
+    This API is used to create a store backend that is used with a database to order different
+    products and perform different tasks like creating a user, use a cart and more.
+  version: 1.0.0
+paths:
+  /products:
+    get:
+      summary: Get all the products in database (index)
+      responses:
+        "200":
+          description: "products successfully retrieved"
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: "Products not found in database ,database is probably empty"
+          content:
+            application/json:
+              schema:
+                type: string
+    post:
+      summary: Creates a new product in database products
+      responses:
+        "200":
+          description: "product successfully created"
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: "failed to create product"
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                noItemsfound:
+                  value: "cannot create product check all info is provided"
+  /products/:id:
+    get:
+      summary: Get one product in database with id parameter (show)
+      responses:
+        "200":
+          description: "product successfully retrieved"
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: "product not found in database"
+          content:
+            application/json:
+              schema:
+                type: string
+    patch:
+      summary: update one product in database with id parameter
+      responses:
+        "200":
+          description: "product successfully updated"
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: "product not found in users database so it cannot be updated"
+          content:
+            application/json:
+              schema:
+                type: string
+    delete:
+      summary: delete one product in database with id parameter
+      responses:
+        "200":
+          description: "product successfully deleted"
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: "product not found in users database so it cannot be deleted"
+          content:
+            application/json:
+              schema:
+                type: string
+  /products/Top5:
+    get:
+      summary: Get top 5 products in database
+      responses:
+        "200":
+          description: "Top 5 products successfully retrieved"
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: "Top 5 prodcuts not found in database ,database is probably empty"
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                noItemsfound:
+                  value: "database is empty"
+  /products/category:
+    get:
+      summary: sort products in database by category
+      responses:
+        "200":
+          description: "products successfully retrieved and sorted by category"
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: "prodcuts not found in database ,database is probably empty"
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                noItemsfound:
+                  value: "database is empty"
+  /users:
+    get:
+      summary: Get all the users in database (index)
+      responses:
+        "200":
+          description: "users successfully retrieved"
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: "items not found in database ,database is probably empty"
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                noItemsfound:
+                  value: "users database is empty"
+    post:
+      summary: Creates a new user in database users
+      responses:
+        "200":
+          description: "user successfully created"
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: "failed to create user"
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                noItemsfound:
+                  value: "cannot create user check all info is provided"
+  /users/:id:
+    get:
+      summary: Get one user in database with id parameter (show)
+      responses:
+        "200":
+          description: "user successfully retrieved"
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: "user not found in database"
+          content:
+            application/json:
+              schema:
+                type: string
+    patch:
+      summary: update one user in database with id parameter
+      responses:
+        "200":
+          description: "user successfully updated"
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: "user not found in database"
+          content:
+            application/json:
+              schema:
+                type: string
+    delete:
+      summary: delete one user in database with id parameter
+      responses:
+        "200":
+          description: "user successfully deleted"
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: "user not found in database"
+          content:
+            application/json:
+              schema:
+                type: string
+  /users/:id/auth:
+    post:
+      summary: authenticates user in database users
+      responses:
+        "200":
+          description: "user successfully created"
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: "failed to authorize user"
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                noItemsfound:
+                  value: "cannot authorize user token is not valid"
+  /orders:
+    get:
+      summary: Get current order by user database with id args
+      responses:
+        "200":
+          description: "current order successfully retrieved"
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: "current order not found in database"
+          content:
+            application/json:
+              schema:
+                type: string
+  /orders/comp:
+    get:
+      summary: Get completed orders by user database with id args
+      responses:
+        "200":
+          description: "completed orders successfully retrieved"
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: "completed orders not found in database"
+          content:
+            application/json:
+              schema:
+                type: string

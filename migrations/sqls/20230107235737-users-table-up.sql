@@ -1,0 +1,2 @@
+/* Replace with your SQL commands */
+CREATE TABLE users(ID SERIAL PRIMARY KEY,first_name VARCHAR(30) NOT NULL ,last_name VARCHAR(30) NOT NULL ,username VARCHAR(35) NOT NULL ,password VARCHAR(72) NOT NULL );

@@ -2,14 +2,14 @@
 	"dev": {
 		"driver": "pg",
 		"host": { "ENV": "postgres_host" },
-		"database": { "ENV": "store" },
+		"database": { "ENV": "postgres_db" },
 		"user": { "ENV": "postgres_user" },
 		"password": { "ENV": "postgres_pass" }
 	},
 	"test": {
 		"driver": "pg",
 		"host": { "ENV": "postgres_host" },
-		"database": { "ENV": "store_test" },
+		"database": { "ENV": "postgres_db_test" },
 		"user": { "ENV": "postgres_user" },
 		"password": { "ENV": "postgres_pass" }
 	}

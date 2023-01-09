@@ -1,9 +1,10 @@
-import client from "../../Config/database";
+import client from "../../../Config/database";
 
+// User naming not following camelCase to be same name format as database
 export interface User {
 	id?: number;
-	firstName: string;
-	lastName: string;
+	first_name: string;
+	last_name: string;
 	username: string;
 	password: string;
 }
@@ -22,7 +23,7 @@ export class usersClass {
 		}
 	};
 
-	static show = async (id: number) => {
+	static show = async (id: number): Promise<User | string> => {
 		const conn = await client.connect();
 		const sql = "SELECT * FROM users WHERE id =($1);";
 		const result = await conn.query(sql, [id]);
@@ -34,15 +35,17 @@ export class usersClass {
 		}
 	};
 
-	static create = async (user: User) => {
+	static create = async (user: User): Promise<User | string> => {
 		const conn = await client.connect();
-		const sql = "INSERT into users VALUES ($1,$2,$3,$4) RETURNING *;";
+		const sql =
+			"INSERT INTO users (first_name,last_name,username,password) VALUES ($1,$2,$3,$4) RETURNING *;";
 		const result = await conn.query(sql, [
-			user.firstName,
-			user.lastName,
+			user.first_name,
+			user.last_name,
 			user.username,
 			user.password,
 		]);
+
 		//check for empty result
 		if (result.rowCount === 0) {
 			return "empty";
@@ -56,9 +59,9 @@ export class usersClass {
 		lastnameExist: number,
 		usernameExist: number,
 		passwordExist: number,
-		user: User,
+		user: object,
 		id: number,
-	) => {
+	): Promise<User | string> => {
 		const conn = await client.connect();
 		const sqlinit = "UPDATE users SET";
 
@@ -66,16 +69,16 @@ export class usersClass {
 		let commacount = 0;
 
 		if (firstnameExist === 1) {
-			sqlParams = "first_name = $(1)";
+			sqlParams = "first_name=$1";
 			commacount++;
 		}
 
 		if (lastnameExist === 1) {
 			if (commacount === 0) {
-				sqlParams = "last_name = $(1)";
+				sqlParams = "last_name=$1";
 			} else {
 				if (commacount === 1) {
-					sqlParams = ",last_name = $(2)";
+					sqlParams = sqlParams + " ,last_name=$2";
 				}
 			}
 			commacount++;
@@ -83,12 +86,12 @@ export class usersClass {
 
 		if (usernameExist === 1) {
 			if (commacount === 0) {
-				sqlParams = "username = $(1)";
+				sqlParams = "username=$1";
 			} else {
 				if (commacount === 1) {
-					sqlParams = ",username = $(2)";
+					sqlParams = sqlParams + " ,username=$2";
 				} else if (commacount === 2) {
-					sqlParams = ",username = $(3)";
+					sqlParams = sqlParams + " ,username=$3";
 				}
 			}
 			commacount++;
@@ -96,22 +99,29 @@ export class usersClass {
 
 		if (passwordExist === 1) {
 			if (commacount === 0) {
-				sqlParams = "password = $(1)";
+				sqlParams = "password=$1";
 			} else {
 				if (commacount === 1) {
-					sqlParams = ",password = $(2)";
+					sqlParams = sqlParams + " ,password=$2";
 				} else if (commacount === 2) {
-					sqlParams = ",password = $(3)";
+					sqlParams = sqlParams + " ,password=$3";
 				} else if (commacount === 3) {
-					sqlParams = ",password = $(4)";
+					sqlParams = sqlParams + " ,password=$4";
 				}
+				commacount++;
 			}
-			commacount++;
 		}
 
-		const sql = `${sqlinit} ${sqlParams} WHERE id=$(${commacount});`;
+		//to correctly place id placeholder value
+		commacount++;
 
-		const result = await conn.query(sql, [user]);
+		const sql = `${sqlinit} ${sqlParams} WHERE id=$${commacount} RETURNING *;`;
+
+		//spread operators
+		const userSpread = { ...user, id };
+
+		const result = await conn.query(sql, Object.values(userSpread));
+
 		//check for empty result
 		if (result.rowCount === 0) {
 			return "empty";
@@ -120,9 +130,9 @@ export class usersClass {
 		}
 	};
 
-	static delete = async (id: number) => {
+	static delete = async (id: number): Promise<User | string> => {
 		const conn = await client.connect();
-		const sql = "DELETE FROM users WHERE id = ($1)";
+		const sql = "DELETE FROM users WHERE id = ($1) RETURNING *";
 		const result = await conn.query(sql, [id]);
 		//check for empty result
 		if (result.rowCount === 0) {

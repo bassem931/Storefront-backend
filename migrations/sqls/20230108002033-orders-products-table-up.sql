@@ -1,2 +1,2 @@
 /* Replace with your SQL commands */
-CREATE TABLE order_products(id SERIAL PRIMARY KEY, user_id INTEGER REFERENCES users (id),product_id INTEGER REFERENCES products (id),quantity INTEGER NOT NULL);
+CREATE TABLE order_products(id SERIAL PRIMARY KEY, order_id INTEGER REFERENCES orders (id) ON DELETE CASCADE ON UPDATE CASCADE ,product_id INTEGER REFERENCES products (id) ON DELETE CASCADE ON UPDATE CASCADE ,quantity INTEGER NOT NULL);

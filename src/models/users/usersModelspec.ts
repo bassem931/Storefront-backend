@@ -1,4 +1,5 @@
 import { User, usersClass } from "./usersModel";
+import { execSync } from "child_process";
 
 describe("Suite to test users model functions", () => {
 	describe("Suite to test users model functions exist", () => {
@@ -13,15 +14,23 @@ describe("Suite to test users model functions", () => {
 		it("create method defined", () => {
 			expect(usersClass.create).toBeDefined;
 		});
+
 		it("update method defined", () => {
 			expect(usersClass.update).toBeDefined;
 		});
+
 		it("delete method defined", () => {
 			expect(usersClass.delete).toBeDefined;
 		});
 	});
 
 	describe("Suite to test users model functions work as expected", () => {
+		beforeAll(() => {
+			//run reset command before starting
+			execSync("yarn reset");
+			console.log("database reset");
+		});
+
 		const userTest: User = {
 			first_name: "firsttest",
 			last_name: "lasttest",
@@ -45,13 +54,14 @@ describe("Suite to test users model functions", () => {
 		it("creates the first user", async () => {
 			const user1 = await usersClass.create(userTest);
 			//use object.values to avoid key naming differences
-			// working
-			// const obj = { ...user1 };
-			// console.log(obj);
+
 			//slice array to remove id which is the first item
-			const cleanUser = Object.values(user1).slice(1);
+			const cleanUser = Object.values(user1).slice(1, 4);
+
+			const { first_name, last_name, username } = userTest;
+
 			//compare all values to each other except id
-			expect(cleanUser).toEqual(Object.values(userTest));
+			expect(cleanUser).toEqual(Object.values({ first_name, last_name, username }));
 			// compare id
 			expect((user1 as User).id).toEqual(1);
 		});
@@ -59,13 +69,13 @@ describe("Suite to test users model functions", () => {
 		it("creates another user", async () => {
 			const user2 = await usersClass.create(userSecTest);
 			//use object.values to avoid key naming differences
-			// working
-			// const obj = { ...user1 };
-			// console.log(obj);
+
 			//slice array to remove id which is the first item
-			const cleanUser = Object.values(user2).slice(1);
-			//compare all values to each other except id
-			expect(cleanUser).toEqual(Object.values(userSecTest));
+			const cleanUser = Object.values(user2).slice(1, 4);
+
+			const { first_name, last_name, username } = userSecTest;
+			//compare all values to each other except id and password
+			expect(cleanUser).toEqual(Object.values({ first_name, last_name, username }));
 			// compare id
 			expect((user2 as User).id).toEqual(2);
 		});
@@ -77,7 +87,7 @@ describe("Suite to test users model functions", () => {
 		});
 
 		//update tests
-		describe("Testing update model function with different combinations", () => {
+		describe("Testing user update model function with different combinations", () => {
 			it("should update user full data", async () => {
 				const userTest: User = {
 					first_name: "first",

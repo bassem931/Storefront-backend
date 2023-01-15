@@ -1,8 +1,25 @@
 # Storefront Backend Project
 
-## Getting Started
+## Project Setup
 
-This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
+### Environment variables
+
+to set up the project A .env file must be created and added. This is made to ensure that your sensitive project information is hidden.
+These are the environment variables to be defined:
+port (number) = the port for the server to listen on if not defined 3000 will be used as a default option
+postgres_host = the host to run the database on . during development localhost is used
+postgres_db = the name of the database
+postgres_db_test = the name of the testing database
+postgres_user = the name of the postgres user which will be used to access and edit the database
+postgres_pass = the password of the postgres user
+env = to change the database used it should be 'dev' for development
+passBcrypt = the password or pepper used that is added with any password hashed
+saltRounds (number )= the number of hashing rounds or salt
+tokenPass = the password used to verify tokens
+
+### Package intsructions
+
+all the dependencies required is defined in the package.json file. To install use 'npm install' or 'yarn install' if you have yarn installed globally
 
 ## Required Technologies
 
@@ -12,8 +29,8 @@ Your application must make use of the following libraries:
 - [x] Node/Express for the application logic
 - [x] dotenv from npm for managing environment variables
 - [x] db-migrate from npm for migrations
-- jsonwebtoken from npm for working with JWTs
-- jasmine from npm for testing
+- [x]jsonwebtoken from npm for working with JWTs
+- [x]jasmine from npm for testing
 
 ## Steps to Completion
 
@@ -42,16 +59,39 @@ Your application must make use of the following libraries:
 
 Create the models for each database table. The methods in each model should map to the endpoints in `REQUIREMENTS.md`. Remember that these models should all have test suites and mocks.
 
+- [x] Users model
+- [x] Users spec
+- [x] products model
+- [x] products spec
+- [x] orders model
+- [x] orders spec
+- [x] orders_products model
+- [x] orders_products spec
+
 ### 4. Express Handlers
 
 Set up the Express handlers to route incoming requests to the correct model method. Make sure that the endpoints you create match up with the enpoints listed in `REQUIREMENTS.md`. Endpoints must have tests and be CORS enabled.
 
+notes:
+
+- [x] add products(if product exist add quantity)
+- [x] remove products
+- [x] update(quantity)
+- [x] get
+
 ### 5. JWTs
 
 Add JWT functionality as shown in the course. Make sure that JWTs are required for the routes listed in `REQUIUREMENTS.md`.
+
+try to implement user and admin
 
 ### 6. QA and `README.md`
 
 Before submitting, make sure that your project is complete with a `README.md`. Your `README.md` must include instructions for setting up and running your project including how you setup, run, and connect to your database.
 
 Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
+
+updated requirements and readme
+read rubric
+comment code
+update yaml file

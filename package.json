@@ -5,9 +5,10 @@
 	"main": "server.ts",
 	"scripts": {
 		"start": "nodemon src/server.ts",
-		"pretest": "db-migrate reset --env test && db-migrate up --env test",
-		"test": "npx tsc && cross-env ENV=test jasmine && db-migrate --env test down",
+		"reset": "db-migrate reset --env test && db-migrate up --env test",
+		"test": "npx tsc && cross-env ENV=test jasmine",
 		"prettier": "prettier --config .prettierrc --write src/**/*.ts ",
+		"build": "npx tsc",
 		"lint": "eslint src/**/*.ts ",
 		"migrate-up": "db-migrate up -c 10",
 		"migrate-down": "db-migrate down -c 10"

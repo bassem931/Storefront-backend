@@ -10,4 +10,7 @@ export const {
 	postgres_user,
 	postgres_pass,
 	env,
+	passBcrypt,
+	saltRounds,
+	tokenPass,
 } = process.env;

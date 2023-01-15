@@ -1,38 +1,56 @@
-# API Requirements
+# Store backend api
 
-The company stakeholders want to create an online storefront to showcase their great product ideas. Users need to be able to browse an index of all products, see the specifics of a single product, and add products to an order that they can view in a cart page. You have been tasked with building the API that will support this application, and your coworker is building the frontend.
-
-These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application.
+this is a Store backend api project which is part of the FWD Udacity advanced Web development course.
+It can be used to create a store with user creation and signing in. authentication
 
 ## API Endpoints
 
 #### Products
 
-- Index : '/products' [GET]
-- Show : '/products/:id' [GET]
-- Create [token required] : '/products' [POST]
+- [x] Index : '/products' [GET]
+- [x] Show : '/products/:id' [GET]
+- [x] Create [token required] : '/products' [POST]
 
-- [OPTIONAL] Top 5 most popular : 'products/Top5' [GET]
-- [OPTIONAL] Products by category (args: product category) : '/products/category' [GET]
+- [x] [OPTIONAL] Top 5 most popular : 'products/Top5' [GET]
+- [x] [OPTIONAL] Products by category (args: product category) : '/products/category:category' [GET]
 
-- [OPTIONAL] [ADDED] update [token required] : '/products/:id' [PATCH]
-- [OPTIONAL] [ADDED] delete [token required] : '/products/:id' [DELETE]
+- [x] [OPTIONAL] [ADDED] update [token required] : '/products/:id' [PATCH]
+- [x] [OPTIONAL] [ADDED] delete [token required] : '/products/:id' [DELETE]
 
 #### Users
 
-- Index [token required] : '/users' [GET]
-- Show [token required] : '/users/:id' [GET]
+- [x] Index [token required] : '/users' [GET]
+- [x] Show [token required] : '/users/:id' [GET]
 
-- Create N[token required] : '/users' [GET]
-- [OPTIONAL] [ADDED] update [token required] : '/users/:id' [PATCH]
-- [OPTIONAL] [ADDED] delete [token required] : '/users/:id' [PATCH]
+- [x] Create N[token required] : '/users' [GET]
+- [x] [OPTIONAL] [ADDED] update [token required] : '/users/:id' [PATCH]
+- [x] [OPTIONAL] [ADDED] delete [token required] : '/users/:id' [PATCH]
 
 - [OPTIONAL] [ADDED] authenticate [token required] : '/users/:id/auth' [POST]
 
 #### Orders
 
-- Current Order by user (args: user id)[token required] : '/orders' [GET]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required] : '/orders/comp' [GET]
+- [x] Index [token required] : '/orders' [GET]
+- [x] Show [token required] : '/users/:userid/orders/:id' [GET]
+
+- [x] Create N[token required] : '/orders/:userid' [GET]
+
+- [x] [OPTIONAL] [ADDED] update [token required] : '/orders/:id' [PATCH]
+- [x] [OPTIONAL] [ADDED] delete [token required] : '/orders/:id' [PATCH]
+
+//should be done using join to show products
+
+- [x] Current Order by user (args: user id)[token required] : '/orders' [GET]
+- [x] [OPTIONAL] Completed Orders by user (args: user id)[token required] : '/orders/comp' [GET]
+
+#### Order_products
+
+- [x] Index [token required] : '/orders' [GET]
+- [x] getOrderProducts [token required] : '/myOrder/products/:orderid' [GET]
+
+- [x] addProduct [token required] : '/myOrder/products/:orderid' [POST]
+- [x] updateProduct [token required] : '/myOrder/products/:orderid' [PATCH]
+- [x] deleteProduct [token required] : '/myOrder/products/:orderid' [DELETE]
 
 ##### NOTE
 
@@ -83,7 +101,7 @@ table: users
 
 table: orders
 
-| id  | user_id | order_Status |
+| id  | user_id | order_status |
 | --- | ------- | ------------ |
 |     |         |              |
 |     |         |              |
@@ -104,17 +122,17 @@ order_status_type is an ENUM of values 'active' or 'completed'
 
 table: orders_products
 
-| id  | user_id | product_id | quantity |
-| --- | ------- | ---------- | -------- |
-|     |         |            |          |
-|     |         |            |          |
-|     |         |            |          |
+| id  | order_id | product_id | quantity |
+| --- | -------- | ---------- | -------- |
+|     |          |            |          |
+|     |          |            |          |
+|     |          |            |          |
 
-- user_id FOREIGN KEY of users.id
+- order_id FOREIGN KEY of users.id
 - product_id FOREIGN KEY of products.id
 
-**order_products(id SERIAL PRIMARY KEY , user_id INTEGER FOREIGN KEY OF users.id , product_id INTEGER FOREIGN KEY OF products.id , quantity INTEGER)**
+**order_products(id SERIAL PRIMARY KEY , order_id INTEGER FOREIGN KEY OF users.id , product_id INTEGER FOREIGN KEY OF products.id , quantity INTEGER)**
 
 ##### NOTE
 
-All the added lines is not sql it is just to illustrate the data types and relations.
+All the added lines are not sql it is just to illustrate the data types and relations.

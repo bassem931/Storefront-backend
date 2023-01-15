@@ -66,7 +66,7 @@ const getOrderProducts = async (req: Request, res: Response): Promise<express.Re
 
 		//check output is not empty
 		if (typeof showCall === "string") {
-			return res.status(404).json("no order found with this id");
+			return res.status(404).json("no order found with this id or order is empty");
 		}
 
 		return res.status(200).json(showCall);

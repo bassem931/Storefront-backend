@@ -65,7 +65,7 @@ const authenticateUser = async (req: Request, res: Response, next: NextFunction)
 	}
 
 	//get user id from  request and check it is a number
-	const reqUserId = req.params.user_id;
+	const reqUserId = req.params.userid;
 
 	const checkUserId = await numberChecker(reqUserId, "user id", res);
 	if (checkUserId !== "number") {
@@ -97,7 +97,7 @@ const authenticateOrder = async (req: Request, res: Response, next: NextFunction
 	}
 
 	//get user id from request and check it is a number
-	const reqUserId = req.params.user_id;
+	const reqUserId = req.params.userid;
 
 	const checkUserId = await numberChecker(reqUserId, "user id", res);
 	if (checkUserId !== "number") {
@@ -105,7 +105,7 @@ const authenticateOrder = async (req: Request, res: Response, next: NextFunction
 	}
 
 	//get order id from request and check it is a number
-	const reqOrderId = req.params.order_id;
+	const reqOrderId = req.params.orderid;
 
 	const checkOrderId = await numberChecker(reqOrderId, "order id", res);
 	if (checkOrderId !== "number") {
@@ -124,12 +124,12 @@ const authenticateOrder = async (req: Request, res: Response, next: NextFunction
 	const tokenOrderid = tokenInfo.order_id;
 
 	//order id defined so order status must be defined
-	const orderStatus: order_status_type = tokenInfo.status;
+	const orderStatus: order_status_type = tokenInfo.order_status;
 
 	//check user is same user id
-	if (reqUserId === tokenUserID) {
+	if (parseInt(reqUserId) === tokenUserID) {
 		//same user check order id to make sure no active orders are present
-		if (reqOrderId === tokenOrderid) {
+		if (parseInt(reqOrderId) === tokenOrderid) {
 			if (req.method === "POST") {
 				return res.status(400).json(`order ${tokenOrderid} already created`);
 			} else {
@@ -137,13 +137,21 @@ const authenticateOrder = async (req: Request, res: Response, next: NextFunction
 				next();
 			}
 		} else {
-			if (orderStatus === order_status_type.active) {
-				return res
-					.status(400)
-					.json(`cannot create 2 active orders at the same time use order number ${tokenOrderid}`);
-			} else {
+			//questionable
+			console.log(orderStatus);
+			if (orderStatus === order_status_type.completed) {
 				// token is probably so user can create a new order
 				next();
+			} else {
+				if (req.method === "POST") {
+					return res
+						.status(400)
+						.json(
+							`cannot create 2 active orders at the same time use order number ${tokenOrderid}`,
+						);
+				} else {
+					return res.status(400).json(`cannot view or edit other users orders`);
+				}
 			}
 		}
 	} else {
@@ -161,7 +169,7 @@ const authenticateOrderProduct = async (req: Request, res: Response, next: NextF
 	}
 
 	//get user id from request and check it is a number
-	const reqUserId = req.params.user_id;
+	const reqUserId = req.params.userid;
 
 	const checkUserId = await numberChecker(reqUserId, "user id", res);
 	if (checkUserId !== "number") {
@@ -176,9 +184,13 @@ const authenticateOrderProduct = async (req: Request, res: Response, next: NextF
 		return checkOrderId as Response;
 	}
 
+	console.log(tokenInfo.user_id);
+	console.log(tokenInfo);
+
 	if (tokenInfo.user_id === undefined) {
 		return res.status(404).json("user id not found in token");
 	}
+
 	const tokenUserID = tokenInfo.user_id;
 
 	if (tokenInfo.order_id === undefined) {
@@ -188,12 +200,12 @@ const authenticateOrderProduct = async (req: Request, res: Response, next: NextF
 	const tokenOrderid = tokenInfo.order_id;
 
 	//order id defined so order status must be defined
-	const orderStatus: order_status_type = tokenInfo.status;
+	const orderStatus: order_status_type = tokenInfo.order_status;
 
 	//check user is same user id
-	if (reqUserId === tokenUserID) {
+	if (parseInt(reqUserId) === tokenUserID) {
 		//same user check order id to make sure user has an active order
-		if (reqOrderId === tokenOrderid) {
+		if (parseInt(reqOrderId) === tokenOrderid) {
 			if (orderStatus === order_status_type.completed) {
 				return res.status(400).json(`cannot change completed orders`);
 			} else {

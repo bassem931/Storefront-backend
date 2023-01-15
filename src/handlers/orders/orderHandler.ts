@@ -11,9 +11,9 @@ import { tokenPass } from "../../../Config/envConfig";
 
 //handler fucntion
 export const orderhandler = (app: express.Application) => {
-	app.get("/order", authenticate, index); //should be admin
+	app.get("/orders", authenticate, index); //should be admin
 	app.get("/users/:userid/order/:orderid", authenticateOrder, show);
-	app.post("/users/:userid/order/", authenticateUser, create);
+	app.post("/users/:userid/order/", create);
 	app.patch("/users/:userid/order/:orderid", authenticateOrder, update);
 	app.delete("/users/:userid/order/:orderid", authenticateOrder, remove);
 };
@@ -171,7 +171,7 @@ const update = async (req: Request, res: Response): Promise<express.Response> =>
 		//create new token with order id to authenticate order belong to user
 		const newToken = jwt.sign(
 			{
-				order_status: order_status_type.completed,
+				order_status: orderStatus,
 				order_id: (updateCall as Order).id,
 				user_id: tokenUserID,
 				userType: "normal",

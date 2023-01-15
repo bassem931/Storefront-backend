@@ -1,7 +1,7 @@
 # Store backend api
 
 this is a Store backend api project which is part of the FWD Udacity advanced Web development course.
-It can be used to create a store with user creation and signing in. authentication
+It can be used to create a store with user creation and signing in.
 
 ## API Endpoints
 
@@ -20,7 +20,7 @@ It can be used to create a store with user creation and signing in. authenticati
 #### Users
 
 - [x] Index [token required] : '/users' [GET]
-- [x] Show [token required] : '/users/:id' [GET]
+- [x] Show [token required] : '/users/:userid' [GET]
 
 - [x] Create N[token required] : '/users' [GET]
 - [x] [OPTIONAL] [ADDED] update [token required] : '/users/:id' [PATCH]

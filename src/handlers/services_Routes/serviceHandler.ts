@@ -5,8 +5,8 @@ import { productServices } from "../../services/productService/productService";
 
 //handler fucntion
 export const servicesHandler = (app: express.Application) => {
-	app.get("/users/:userid/active", authenticateUser, activeOrders);
-	app.get("/users/:userid/completed", authenticateUser, completedOrders);
+	app.get("/users/:userId/active", authenticateUser, activeOrders);
+	app.get("/users/:userId/completed", authenticateUser, completedOrders);
 	app.get("/Top5", authenticate, fiveMostPopular); //should be admin
 };
 
@@ -35,7 +35,7 @@ const numberChecker = async (
 };
 
 const activeOrders = async (req: Request, res: Response): Promise<express.Response> => {
-	const userId = req.params.userid;
+	const userId = req.params.userId;
 
 	const checkUserId = await numberChecker(userId, "user id", res);
 	if (checkUserId !== "number") {
@@ -57,7 +57,7 @@ const activeOrders = async (req: Request, res: Response): Promise<express.Respon
 };
 
 const completedOrders = async (req: Request, res: Response): Promise<express.Response> => {
-	const userId = req.params.userid;
+	const userId = req.params.userId;
 
 	const checkUserId = await numberChecker(userId, "user id", res);
 	if (checkUserId !== "number") {

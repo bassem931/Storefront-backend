@@ -99,7 +99,7 @@ export class ordersClass {
 		if (result.rowCount === 0) {
 			return "empty";
 		} else {
-			return result.rows[0];
+			return `order ${id} deleted successfully for user ${(result.rows[0] as Order).user_id}`;
 		}
 	};
 

@@ -8,10 +8,10 @@ import {
 //handler fucntion
 export const order_productshandler = (app: express.Application) => {
 	app.get("/myOrder/products", authenticate, index); //should be admin
-	app.get("/myOrder/products/:orderid", authenticate, getOrderProducts); //should be admin
-	app.post("/users/:userid/addtocart", authenticateOrderProduct, addProduct);
-	app.patch("/users/:userid/editcart", authenticateOrderProduct, updateProduct);
-	app.delete("/users/:userid/deletecart", authenticateOrderProduct, deleteProduct);
+	app.get("/myOrder/products/:orderId", authenticate, getOrderProducts); //should be admin
+	app.post("/users/:userId/addtocart", authenticateOrderProduct, addProduct);
+	app.patch("/users/:userId/editcart", authenticateOrderProduct, updateProduct);
+	app.delete("/users/:userId/deletecart", authenticateOrderProduct, deleteProduct);
 };
 
 //helper functions
@@ -54,7 +54,7 @@ const index = async (req: Request, res: Response): Promise<express.Response> => 
 };
 
 const getOrderProducts = async (req: Request, res: Response): Promise<express.Response> => {
-	const orderId = req.params.orderid;
+	const orderId = req.params.orderId;
 
 	const checkOrderId = await numberChecker(orderId, "order id", res);
 	if (checkOrderId !== "number") {
@@ -102,18 +102,23 @@ const addProduct = async (req: Request, res: Response): Promise<express.Response
 		quantity: quantity,
 	};
 
+	let addProcCall;
+
 	try {
-		const addProcCall = await ordersProductsClass.addProduct(orderDetails);
-
-		//check output is not empty
-		if (typeof addProcCall === "string" && addProcCall === "empty") {
-			return res.status(404).json(addProcCall);
-		}
-
-		return res.status(200).json(addProcCall);
+		addProcCall = await ordersProductsClass.addProduct(orderDetails);
 	} catch (err) {
 		return res.status(500).send("database " + err);
 	}
+
+	//check output is not empty
+	if (addProcCall === "empty") {
+		return res.status(404).json(addProcCall);
+	}
+	if (addProcCall === `product ${productId} does not exist in database`) {
+		return res.status(404).json(addProcCall);
+	}
+
+	return res.status(200).json(addProcCall);
 };
 
 const updateProduct = async (req: Request, res: Response): Promise<express.Response> => {
@@ -182,69 +187,3 @@ const deleteProduct = async (req: Request, res: Response): Promise<express.Respo
 		return res.status(500).send("database " + err);
 	}
 };
-
-// const activeOrders = async (req: Request, res: Response): Promise<express.Response> => {
-// 	const userId = req.params.userid;
-
-// 	if (userId === undefined) {
-// 		return res.status(404).json("user id is not defined");
-// 	}
-
-// 	//check user id is a number
-// 	if (Number.isNaN(parseInt(userId))) {
-// 		return res.status(400).json("user id is not a number");
-// 	}
-
-// 	//check that id number is not equal 0
-// 	else if (parseInt(userId) < 0) {
-// 		return res.status(400).json("user id cannot be a negative number");
-// 	}
-
-// 	try {
-// 		const indexCall = await ordersClass.activeOrders(parseInt(userId));
-
-// 		//check output is not empty
-// 		if (typeof indexCall === "string") {
-// 			if ((indexCall as string) === "empty") {
-// 				return res.status(404).json("no active orders found for user  + userId");
-// 			}
-// 		}
-
-// 		return res.status(200).json(indexCall);
-// 	} catch (err) {
-// 		return res.status(500).send("database error" + err);
-// 	}
-// };
-
-// const completedOrders = async (req: Request, res: Response): Promise<express.Response> => {
-// 	const userId = req.params.userid;
-
-// 	if (userId === undefined) {
-// 		return res.status(404).json("user id is not defined");
-// 	}
-
-// 	//check user id is a number
-// 	if (Number.isNaN(parseInt(userId))) {
-// 		return res.status(400).json("user id is not a number");
-// 	}
-
-// 	//check that id number is not equal 0
-// 	else if (parseInt(userId) < 0) {
-// 		return res.status(400).json("user id cannot be a negative number");
-// 	}
-
-// 	try {
-// 		const indexCall = await ordersClass.completedOrders(parseInt(userId));
-
-// 		//check output is not empty
-// 		if (typeof indexCall === "string") {
-// 			if ((indexCall as string) === "empty") {
-// 				return res.status(404).json("no completed orders found for user " + userId);
-// 			}
-// 		}
-
-// 		return res.status(200).json(indexCall);
-// 	} catch (err) {
-// 		return res.status(500).send("database error" + err);
-// 	}
-// };

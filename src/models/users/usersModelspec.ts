@@ -107,12 +107,9 @@ describe("Suite to test users model functions", () => {
 					2,
 				);
 
-				//slice array to remove id which is the first item
-				const cleanUser = Object.values(user).slice(1);
-				//compare all values to each other except id
-				expect(cleanUser).toEqual(Object.values(userTest));
-				// compare id
-				expect((user as User).id).toEqual(2);
+				expect(user).toEqual(
+					"user 2 updated successfully with first_name ,last_name ,username and password",
+				);
 			});
 
 			it("should update user first and last name only", async () => {
@@ -132,17 +129,12 @@ describe("Suite to test users model functions", () => {
 					2,
 				);
 
-				//slice array to remove take only first name and last name
-				const cleanUser = Object.values(user).slice(1, 3);
-				//compare all values to each other except id
-				expect(cleanUser).toEqual(Object.values(userTest));
-				// compare id
-				expect((user as User).id).toEqual(2);
+				expect(user).toEqual("user 2 updated successfully with first_name and last_name");
 			});
 
 			it("should update username and password only", async () => {
 				const userTest = {
-					usename: "user7eta",
+					username: "user7eta",
 					password: "pass7eta",
 				};
 
@@ -157,12 +149,7 @@ describe("Suite to test users model functions", () => {
 					1,
 				);
 
-				//slice array to remove take only first name and last name
-				const cleanUser = Object.values(user).slice(3);
-				//compare all values to each other except id
-				expect(cleanUser).toEqual(Object.values(userTest));
-				// compare id
-				expect((user as User).id).toEqual(1);
+				expect(user).toEqual("user 1 updated successfully with username and password");
 			});
 
 			it("should update firstname and password only", async () => {
@@ -182,20 +169,13 @@ describe("Suite to test users model functions", () => {
 					1,
 				);
 
-				//slice array to remove take only first name and last name
-				//compare all values to each other except id
-				// expect(first_name).toEqual(userTest.first_name);
-				// expect(password).toEqual(userTest.password);
-				// compare id
-				expect((user as User).id).toEqual(1);
-				expect((user as User).first_name).toEqual(userTest.first_name);
-				expect((user as User).password).toEqual(userTest.password);
+				expect(user).toEqual("user 1 updated successfully with first_name and password");
 			});
 		});
 
 		it("should delete user", async () => {
 			const user = await usersClass.delete(1);
-			expect((user as User).id).toEqual(1);
+			expect(user).toEqual("user 1 deleted successfully");
 		});
 	});
 });

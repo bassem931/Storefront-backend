@@ -7,54 +7,52 @@ It can be used to create a store with user creation and signing in.
 
 #### Products
 
-- [x] Index : '/products' [GET]
-- [x] Show : '/products/:id' [GET]
-- [x] Create [token required] : '/products' [POST]
+- [x] Index : "/products" [GET]
+- [x] Show : "/products/:productId" [GET]
+- [x] Create [token required] : "/products" [POST]
 
-- [x] [OPTIONAL] Top 5 most popular : 'products/Top5' [GET]
-- [x] [OPTIONAL] Products by category (args: product category) : '/products/category:category' [GET]
+- [x] [OPTIONAL] Top 5 most popular : "/Top5" [GET]
+- [x] [OPTIONAL] Products by category (args: product category) : "/products/category/:category" [GET]
 
-- [x] [OPTIONAL] [ADDED] update [token required] : '/products/:id' [PATCH]
-- [x] [OPTIONAL] [ADDED] delete [token required] : '/products/:id' [DELETE]
+- [x] [OPTIONAL] [ADDED] update [token required] : "/products/:productId" [PATCH]
+- [x] [OPTIONAL] [ADDED] delete [token required] : "/products/:productId" [DELETE]
 
 #### Users
 
-- [x] Index [token required] : '/users' [GET]
+- [x] Index [token required] : "/users" [GET]
 - [x] Show [token required] : '/users/:userid' [GET]
 
 - [x] Create N[token required] : '/users' [GET]
 - [x] [OPTIONAL] [ADDED] update [token required] : '/users/:id' [PATCH]
 - [x] [OPTIONAL] [ADDED] delete [token required] : '/users/:id' [PATCH]
 
-- [OPTIONAL] [ADDED] authenticate [token required] : '/users/:id/auth' [POST]
+- [x] [OPTIONAL] [ADDED] delete [token required] : "/signin" [GET]
+
+- [x] [OPTIONAL] [ADDED] authenticate [token required] : '/users/:id/auth' [POST]
 
 #### Orders
 
 - [x] Index [token required] : '/orders' [GET]
 - [x] Show [token required] : '/users/:userid/orders/:id' [GET]
 
-- [x] Create N[token required] : '/orders/:userid' [GET]
+- [x] Create N[token required] : '/users/:userId/order/' [GET]
 
-- [x] [OPTIONAL] [ADDED] update [token required] : '/orders/:id' [PATCH]
-- [x] [OPTIONAL] [ADDED] delete [token required] : '/orders/:id' [PATCH]
+- [x] [OPTIONAL] [ADDED] update [token required] : '/users/:userId/order/:orderId' [PATCH]
+- [x] [OPTIONAL] [ADDED] delete [token required] : '/users/:userId/order/:orderId' [PATCH]
 
-//should be done using join to show products
+##### These two are done using join to show products and are available in the service handler
 
 - [x] Current Order by user (args: user id)[token required] : '/orders' [GET]
 - [x] [OPTIONAL] Completed Orders by user (args: user id)[token required] : '/orders/comp' [GET]
 
 #### Order_products
 
-- [x] Index [token required] : '/orders' [GET]
+- [x] Index [token required] : '/myOrder/products' [GET]
 - [x] getOrderProducts [token required] : '/myOrder/products/:orderid' [GET]
 
-- [x] addProduct [token required] : '/myOrder/products/:orderid' [POST]
-- [x] updateProduct [token required] : '/myOrder/products/:orderid' [PATCH]
-- [x] deleteProduct [token required] : '/myOrder/products/:orderid' [DELETE]
-
-##### NOTE
-
-All endpoints are better explained and organized in a open-api.yaml file
+- [x] addProduct [token required] : '/users/:userId/addtocart' [POST]
+- [x] updateProduct [token required] : '/users/:userId/editcart' [PATCH]
+- [x] deleteProduct [token required] : '/users/:userId/deletecart' [DELETE]
 
 ## Data Shapes
 

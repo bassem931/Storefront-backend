@@ -119,7 +119,7 @@ describe("Suite to test orders model functions", () => {
 
 		it("should delete order", async () => {
 			const order = await ordersClass.delete(1);
-			expect((order as Order).id).toEqual(1);
+			expect(order).toEqual(`order 1 deleted successfully for user 1`);
 		});
 	});
 });

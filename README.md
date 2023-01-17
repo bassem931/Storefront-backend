@@ -17,7 +17,7 @@ passBcrypt = the password or pepper used that is added with any password hashed
 saltRounds (number )= the number of hashing rounds or salt
 tokenPass = the password used to verify tokens
 
-### Package intsructions
+### Package instructions
 
 all the dependencies required is defined in the package.json file. To install use 'npm install' or 'yarn install' if you have yarn installed globally
 
@@ -81,9 +81,13 @@ notes:
 
 ### 5. JWTs
 
-Add JWT functionality as shown in the course. Make sure that JWTs are required for the routes listed in `REQUIUREMENTS.md`.
+the authentication implemented in this project is defined to several types first you must be a user to create an order.Second,to create an order you must be a user and your order id must be matched so that orders will not be accessible to anyone
 
-try to implement user and admin
+endpoints that return tokens:
+
+- '/users" [POST]: return a token with user id
+- "/users/:userId/order/" [POST] : return a token with user_id,order_id and order status of active
+- "/users/:userId/order/:orderId" [POST] : return a token with user_id,order_id and the updated order status
 
 ### 6. QA and `README.md`
 

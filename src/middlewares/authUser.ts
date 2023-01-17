@@ -47,6 +47,7 @@ const getToken = async (req: Request): Promise<string | jwt.JwtPayload> => {
 
 //this function to authenticate the token is valid
 const authenticate = async (req: Request, res: Response, next: NextFunction) => {
+	//get token from helper
 	const token = await getToken(req);
 	if (typeof token === "string") {
 		return res.status(401).json(`${token}`);
@@ -65,8 +66,9 @@ const authenticateUser = async (req: Request, res: Response, next: NextFunction)
 	}
 
 	//get user id from  request and check it is a number
-	const reqUserId = req.params.userid;
+	const reqUserId = req.params.userId;
 
+	//check user id is a number
 	const checkUserId = await numberChecker(reqUserId, "user id", res);
 	if (checkUserId !== "number") {
 		return checkUserId as Response;
@@ -97,26 +99,29 @@ const authenticateOrder = async (req: Request, res: Response, next: NextFunction
 	}
 
 	//get user id from request and check it is a number
-	const reqUserId = req.params.userid;
+	const reqUserId = req.params.userId;
 
+	//check user id is a number
 	const checkUserId = await numberChecker(reqUserId, "user id", res);
 	if (checkUserId !== "number") {
 		return checkUserId as Response;
 	}
 
 	//get order id from request and check it is a number
-	const reqOrderId = req.params.orderid;
+	const reqOrderId = req.params.orderId;
 
 	const checkOrderId = await numberChecker(reqOrderId, "order id", res);
 	if (checkOrderId !== "number") {
 		return checkOrderId as Response;
 	}
 
+	//get user id from token
 	if (tokenInfo.user_id === undefined) {
 		return res.status(404).json("user id not found in token");
 	}
 	const tokenUserID = tokenInfo.user_id;
 
+	//get order id from token
 	if (tokenInfo.order_id === undefined) {
 		//creating active order so pass
 		next();
@@ -137,8 +142,7 @@ const authenticateOrder = async (req: Request, res: Response, next: NextFunction
 				next();
 			}
 		} else {
-			//questionable
-			console.log(orderStatus);
+			//check if complete allow new orders
 			if (orderStatus === order_status_type.completed) {
 				// token is probably so user can create a new order
 				next();
@@ -169,7 +173,7 @@ const authenticateOrderProduct = async (req: Request, res: Response, next: NextF
 	}
 
 	//get user id from request and check it is a number
-	const reqUserId = req.params.userid;
+	const reqUserId = req.params.userId;
 
 	const checkUserId = await numberChecker(reqUserId, "user id", res);
 	if (checkUserId !== "number") {
@@ -183,9 +187,6 @@ const authenticateOrderProduct = async (req: Request, res: Response, next: NextF
 	if (checkOrderId !== "number") {
 		return checkOrderId as Response;
 	}
-
-	console.log(tokenInfo.user_id);
-	console.log(tokenInfo);
 
 	if (tokenInfo.user_id === undefined) {
 		return res.status(404).json("user id not found in token");

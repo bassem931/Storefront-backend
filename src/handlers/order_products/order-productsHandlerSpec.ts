@@ -70,7 +70,7 @@ describe("order-products Handlers testbench \n", () => {
 	let activeTokenUser1: string | jwt.JwtPayload;
 	let activeTokenOrder1: string | jwt.JwtPayload;
 
-	it("get all order-products ,should return empty \n", async () => {
+	it("get all order-products ,should return empty", async () => {
 		//create user for the rest of the tests
 		activeTokenUser1 = await createUser(userTest);
 
@@ -97,7 +97,7 @@ describe("order-products Handlers testbench \n", () => {
 		expect(order.body).toEqual("all orders still empty");
 	});
 
-	it("create first product in order \n", async () => {
+	it("create first product in order", async () => {
 		await supertest(app)
 			.post("/users/1/addtocart")
 			.send(productOrderDetails)
@@ -110,7 +110,7 @@ describe("order-products Handlers testbench \n", () => {
 		// activeTokenOrder1 = order.body;
 	});
 
-	it("create second product in order \n", async () => {
+	it("create second product in order", async () => {
 		await supertest(app)
 			.post("/users/1/addtocart")
 			.send(secProductOrderDetails)

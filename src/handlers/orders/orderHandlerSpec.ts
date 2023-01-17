@@ -37,7 +37,7 @@ describe("orders Handlers testbench \n", () => {
 	let activeTokenOrder1: string | jwt.JwtPayload;
 	let activeTokenOrder2: string | jwt.JwtPayload;
 
-	it("get all orders should return empty \n", async () => {
+	it("get all orders should return empty", async () => {
 		//create user for the rest of the tests
 		activeTokenUser1 = await createUser(userTest);
 
@@ -50,7 +50,7 @@ describe("orders Handlers testbench \n", () => {
 		expect(order.body).toEqual("Orders not found in database ,database is probably empty");
 	});
 
-	it("create first order \n", async () => {
+	it("create first order", async () => {
 		const order = await supertest(app)
 			.post("/users/1/order/")
 			.send(orderTest)
@@ -60,15 +60,13 @@ describe("orders Handlers testbench \n", () => {
 
 		activeTokenOrder1 = order.body;
 
-		console.log(activeTokenOrder1);
-
 		//jwt always start with those three letters
 		expect((order.body as string).charAt(0)).toEqual("e");
 		expect((order.body as string).charAt(1)).toEqual("y");
 		expect((order.body as string).charAt(2)).toEqual("J");
 	});
 
-	it("create second order \n", async () => {
+	it("create second order", async () => {
 		const order = await supertest(app)
 			.post("/users/1/order/")
 			.send(orderTest)
@@ -78,15 +76,13 @@ describe("orders Handlers testbench \n", () => {
 
 		activeTokenOrder2 = order.body;
 
-		console.log(activeTokenOrder2);
-
 		//jwt always start with those three letters
 		expect((order.body as string).charAt(0)).toEqual("e");
 		expect((order.body as string).charAt(1)).toEqual("y");
 		expect((order.body as string).charAt(2)).toEqual("J");
 	});
 
-	it("get second order \n", async () => {
+	it("get second order", async () => {
 		const order = await supertest(app)
 			.get("/users/1/order/2")
 			.set("Authorization", `Bearer ${activeTokenOrder2}`);
@@ -95,7 +91,7 @@ describe("orders Handlers testbench \n", () => {
 		expect((order.body as Order).id).toEqual(2);
 	});
 
-	it("edit second order \n", async () => {
+	it("edit second order", async () => {
 		const orderEdit = {
 			order_status: order_status_type.active,
 		};
@@ -113,7 +109,7 @@ describe("orders Handlers testbench \n", () => {
 		expect((order.body as string).charAt(2)).toEqual("J");
 	});
 
-	it("delete first order \n", async () => {
+	it("delete first order", async () => {
 		const order = await supertest(app)
 			.delete("/users/1/order/1")
 			.set("Authorization", `Bearer ${activeTokenOrder1}`);

@@ -2,8 +2,8 @@ import { execSync } from "child_process";
 import { User, usersClass } from "../users/usersModel";
 import { Order, ordersClass, order_status_type } from "./orderModel";
 
-describe("Suite to test orders model functions", () => {
-	describe("Suite to test orders model functions exist", () => {
+describe("Suite to test orders model functions\n", () => {
+	describe("Suite to test orders model functions exist\n", () => {
 		it("index method defined", () => {
 			expect(ordersClass.index).toBeDefined;
 		});
@@ -25,7 +25,7 @@ describe("Suite to test orders model functions", () => {
 		});
 	});
 
-	describe("Suite to test orders model functions work as expected", () => {
+	describe("Suite to test orders model functions work as expected\n", () => {
 		beforeAll(() => {
 			//run reset command before starting
 			execSync("yarn reset");

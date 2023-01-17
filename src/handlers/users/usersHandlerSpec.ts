@@ -28,7 +28,7 @@ describe("users Handlers testbench \n", () => {
 	let activeTokenUser1: string | jwt.JwtPayload;
 	let activeTokenUser2: string | jwt.JwtPayload;
 
-	it("test API endpoint base url \n", async () => {
+	it("test API endpoint base url", async () => {
 		//test main route
 		await supertest(app)
 			.get("/")
@@ -52,19 +52,19 @@ describe("users Handlers testbench \n", () => {
 	// 		});
 	// });
 
-	it("create a user \n", async () => {
+	it("create a user ", async () => {
 		const user1 = await supertest(app).post("/users").send(userTest).expect(200);
 
 		activeTokenUser1 = user1.body;
 	});
 
-	it("create a second user \n", async () => {
+	it("create a second user ", async () => {
 		const user2 = await supertest(app).post("/users").send(userTest2).expect(200);
 
 		activeTokenUser2 = user2.body;
 	});
 
-	it("gets user 1 data without token \n", async () => {
+	it("gets user 1 data without token ", async () => {
 		await supertest(app)
 			.get("/users/1")
 			.expect(401)
@@ -75,7 +75,7 @@ describe("users Handlers testbench \n", () => {
 
 	// console.log(activeToken);
 
-	it("gets user 1 data with token \n", async () => {
+	it("gets user 1 data with token ", async () => {
 		const user1 = await supertest(app)
 			.get("/users/1")
 			.set("Authorization", `Bearer ${activeTokenUser1}`)
@@ -93,7 +93,7 @@ describe("users Handlers testbench \n", () => {
 		expect(user1.body.id).toEqual(1);
 	});
 
-	it("edits user 1 data with token \n", async () => {
+	it("edits user 1 data with token ", async () => {
 		const userEdit = {
 			first_name: "salah",
 			last_name: "dako",
@@ -108,7 +108,7 @@ describe("users Handlers testbench \n", () => {
 		expect(user1.body).toEqual("user 1 updated successfully with first_name and last_name");
 	});
 
-	it("deletes user 1 data with token \n", async () => {
+	it("deletes user 1 data with token ", async () => {
 		const user1 = await supertest(app)
 			.delete("/users/1")
 			.set("Authorization", `Bearer ${activeTokenUser1}`)

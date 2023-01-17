@@ -1,8 +1,8 @@
 import { User, usersClass } from "./usersModel";
 import { execSync } from "child_process";
 
-describe("Suite to test users model functions", () => {
-	describe("Suite to test users model functions exist", () => {
+describe("Suite to test users model functions\n", () => {
+	describe("Suite to test users model functions exist\n", () => {
 		it("index method defined", () => {
 			expect(usersClass.index).toBeDefined;
 		});
@@ -24,7 +24,7 @@ describe("Suite to test users model functions", () => {
 		});
 	});
 
-	describe("Suite to test users model functions work as expected", () => {
+	describe("Suite to test users model functions work as expected\n", () => {
 		beforeAll(() => {
 			//run reset command before starting
 			execSync("yarn reset");
@@ -87,7 +87,7 @@ describe("Suite to test users model functions", () => {
 		});
 
 		//update tests
-		describe("Testing user update model function with different combinations", () => {
+		describe("Testing user update model function with different combinations\n", () => {
 			it("should update user full data", async () => {
 				const userTest: User = {
 					first_name: "first",

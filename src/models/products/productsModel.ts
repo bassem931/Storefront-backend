@@ -8,7 +8,7 @@ export interface Product {
 }
 
 //will be used to optimize perfomance later add product
-const productspres = [];
+// const productspres = [];
 
 export class productsClass {
 	static index = async (): Promise<Product[] | string> => {

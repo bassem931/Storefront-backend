@@ -40,7 +40,7 @@ describe("products Handlers testbench \n", () => {
 	//create user and get token
 	let activeTokenUser1: string | jwt.JwtPayload;
 
-	it("get all products should return empty \n", async () => {
+	it("get all products should return empty ", async () => {
 		//create user for the rest of the tests
 		activeTokenUser1 = await createUser(userTest);
 
@@ -52,7 +52,7 @@ describe("products Handlers testbench \n", () => {
 		);
 	});
 
-	it("create first product \n", async () => {
+	it("create first product ", async () => {
 		//call supertest to fetch url
 		const product = await supertest(app)
 			.post("/products")
@@ -63,7 +63,7 @@ describe("products Handlers testbench \n", () => {
 		expect(product.body).toEqual("product 1 has been created");
 	});
 
-	it("create second product \n", async () => {
+	it("create second product", async () => {
 		//call supertest to fetch url
 		const product = await supertest(app)
 			.post("/products")
@@ -74,7 +74,7 @@ describe("products Handlers testbench \n", () => {
 		expect(product.body).toEqual("product 2 has been created");
 	});
 
-	it("get second product \n", async () => {
+	it("get second product ", async () => {
 		//call supertest to fetch url
 		const product = await supertest(app)
 			.get("/products/2")
@@ -84,7 +84,7 @@ describe("products Handlers testbench \n", () => {
 		expect((product.body as Product).id).toEqual(2);
 	});
 
-	it("edit second product \n", async () => {
+	it("edit second product ", async () => {
 		//object with updated parameters
 		const productEdit = {
 			name: "3adel",
@@ -101,7 +101,7 @@ describe("products Handlers testbench \n", () => {
 		expect(product.body).toEqual("product 2 updated successfully with name and price");
 	});
 
-	it("delete first product \n", async () => {
+	it("delete first product ", async () => {
 		//call supertest to fetch url
 		const product = await supertest(app)
 			.delete("/products/1")

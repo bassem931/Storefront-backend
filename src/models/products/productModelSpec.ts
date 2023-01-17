@@ -1,8 +1,8 @@
 import { execSync } from "child_process";
 import { Product, productsClass } from "./productsModel";
 
-describe("Suite to test products model functions", () => {
-	describe("Suite to test products model functions exist", () => {
+describe("Suite to test products model functions \n", () => {
+	describe("Suite to test products model functions exist\n", () => {
 		it("index method defined", () => {
 			expect(productsClass.index).toBeDefined;
 		});
@@ -24,7 +24,7 @@ describe("Suite to test products model functions", () => {
 		});
 	});
 
-	describe("Suite to test products model functions work as expected", () => {
+	describe("Suite to test products model functions work as expected\n", () => {
 		beforeAll(() => {
 			//run reset command before starting
 			execSync("yarn reset");
@@ -61,7 +61,7 @@ describe("Suite to test products model functions", () => {
 			const product2 = await productsClass.create(productSecTest);
 
 			expect(200);
-			expect(product2).toEqual("product 1 has been created");
+			expect(product2).toEqual("product 2 has been created");
 		});
 
 		//show test
@@ -71,7 +71,7 @@ describe("Suite to test products model functions", () => {
 		});
 
 		//update tests
-		describe("Testing product update model function with different combinations", () => {
+		describe("Testing product update model function with different combinations\n", () => {
 			it("should update product full data", async () => {
 				const productTest: Product = {
 					name: "new Product",
@@ -89,12 +89,7 @@ describe("Suite to test products model functions", () => {
 					2,
 				);
 
-				//slice array to remove id which is the first item
-				const cleanProduct = Object.values(product).slice(1);
-				//compare all values to each other except id
-				expect(cleanProduct).toEqual(Object.values(productTest));
-				// compare id
-				expect((product as Product).id).toEqual(2);
+				expect(product).toEqual("product 2 updated successfully with name ,price and category");
 			});
 
 			it("should update product name and price only", async () => {
@@ -113,12 +108,7 @@ describe("Suite to test products model functions", () => {
 					2,
 				);
 
-				//slice array to remove take only first name and last name
-				const cleanProduct = Object.values(product).slice(1, 3);
-				//compare all values to each other except id
-				expect(cleanProduct).toEqual(Object.values(productTest));
-				// compare id
-				expect((product as Product).id).toEqual(2);
+				expect(product).toEqual("product 2 updated successfully with name and price");
 			});
 
 			it("should update price and category only", async () => {
@@ -137,12 +127,7 @@ describe("Suite to test products model functions", () => {
 					1,
 				);
 
-				//slice array to remove take only first name and last name
-				const cleanProduct = Object.values(product).slice(2);
-				//compare all values to each other except id
-				expect(cleanProduct).toEqual(Object.values(productTest));
-				// compare id
-				expect((product as Product).id).toEqual(1);
+				expect(product).toEqual("product 1 updated successfully with price and category");
 			});
 
 			it("should update name and category only", async () => {
@@ -161,14 +146,7 @@ describe("Suite to test products model functions", () => {
 					1,
 				);
 
-				//slice array to remove take only first name and last name
-				//compare all values to each other except id
-				// expect(name).toEqual(productTest.name);
-				// expect(password).toEqual(productTest.password);
-				// compare id
-				expect((product as Product).id).toEqual(1);
-				expect((product as Product).name).toEqual(productTest.name);
-				expect((product as Product).category).toEqual(productTest.category);
+				expect(product).toEqual("product 1 updated successfully with name and category");
 			});
 		});
 
@@ -182,7 +160,7 @@ describe("Suite to test products model functions", () => {
 
 		it("should delete product", async () => {
 			const product = await productsClass.delete(1);
-			expect((product as Product).id).toEqual(1);
+			expect(product).toEqual("product 1 deleted successfully");
 		});
 	});
 });

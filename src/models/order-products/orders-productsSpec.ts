@@ -4,8 +4,8 @@ import { Product, productsClass } from "../products/productsModel";
 import { User, usersClass } from "../users/usersModel";
 import { OrdersProducts, ordersProductsClass } from "./order_productsModel";
 
-describe("Suite to test orders-products model functions", () => {
-	describe("Suite to test orders-products model functions exist", () => {
+describe("Suite to test orders-products model functions \n", () => {
+	describe("Suite to test orders-products model functions exist \n", () => {
 		it("index method defined", () => {
 			expect(ordersProductsClass.index).toBeDefined;
 		});
@@ -26,7 +26,7 @@ describe("Suite to test orders-products model functions", () => {
 		});
 	});
 
-	describe("Suite to test orders-products model functionality", () => {
+	describe("Suite to test orders-products model functionality\n", () => {
 		beforeAll(() => {
 			//run reset command before starting
 			execSync("yarn reset");

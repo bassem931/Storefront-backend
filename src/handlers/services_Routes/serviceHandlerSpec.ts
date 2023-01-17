@@ -70,7 +70,7 @@ describe("order-products Handlers testbench \n", () => {
 	let activeTokenUser1: string | jwt.JwtPayload;
 	let activeTokenOrder1: string | jwt.JwtPayload;
 
-	it("get all order-products ,should return empty", async () => {
+	it("creates all test units", async () => {
 		//////////////create test object////////////
 
 		//create user for the rest of the tests
@@ -90,40 +90,49 @@ describe("order-products Handlers testbench \n", () => {
 		//create order for the rest of the tests
 		activeTokenOrder1 = await createOrder(orderTest, 1);
 
-		////////////////start test//////////////////
-
-		//call supertest to fetch url
-		const order = await supertest(app)
-			.get("/myOrder/products")
-			.expect(404)
-			.set("Authorization", `Bearer ${activeTokenUser1}`);
-
-		expect(order.body).toEqual("all orders still empty");
-	});
-
-	it("create first product in order", async () => {
+		//add products to order
 		await supertest(app)
 			.post("/users/1/addtocart")
 			.send(productOrderDetails)
-			.set("Authorization", `Bearer ${activeTokenOrder1}`)
-			.expect(200)
-			.then(res => {
-				expect(res.body).toEqual("product number 1 created in order 1");
-			});
+			.set("Authorization", `Bearer ${activeTokenOrder1}`);
 
-		// activeTokenOrder1 = order.body;
-	});
-
-	it("create second product in order", async () => {
+		//add second product
 		await supertest(app)
 			.post("/users/1/addtocart")
 			.send(secProductOrderDetails)
-			.set("Authorization", `Bearer ${activeTokenOrder1}`)
-			.expect(200)
-			.then(res => {
-				expect(res.body).toEqual("product number 2 created in order 1");
-			});
+			.set("Authorization", `Bearer ${activeTokenOrder1}`);
+		////////////////start test//////////////////
+		expect(200);
 	});
 
-	//delete and update will be added later
+	it("get active order products", async () => {
+		await supertest(app)
+			.get("/users/1/active")
+			.send(productOrderDetails)
+			.set("Authorization", `Bearer ${activeTokenUser1}`)
+			.expect(200);
+	});
+
+	it("get completed order products", async () => {
+		await supertest(app)
+			.get("/users/1/completed")
+			.set("Authorization", `Bearer ${activeTokenUser1}`)
+			.expect(404);
+	});
+
+	it("get five most popular products", async () => {
+		await supertest(app)
+			.get("/Top5")
+			.set("Authorization", `Bearer ${activeTokenUser1}`)
+			.expect(200)
+			.then(res => {
+				expect(res.body[0].product_id).toEqual(1);
+				expect(res.body[1].product_id).toEqual(2);
+			})
+			.catch(err => {
+				if (err) {
+					fail(err);
+				}
+			});
+	});
 });

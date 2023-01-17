@@ -1,7 +1,7 @@
 # Store backend api
 
 this is a Store backend api project which is part of the FWD Udacity advanced Web development course.
-It can be used to create a store with user creation and signing in.
+It can be used to create a store with user creation and signing in,create an order and add items to cart
 
 ## API Endpoints
 

@@ -91,5 +91,3 @@ const fiveMostPopular = async (req: Request, res: Response): Promise<express.Res
 		return res.status(500).send("database error" + err);
 	}
 };
-
-//should be endpoint tested

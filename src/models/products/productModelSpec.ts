@@ -45,29 +45,45 @@ describe("Suite to test products model functions \n", () => {
 
 		//empty index test should return empty
 		it("checks array is empty using index", async () => {
-			const res = await productsClass.index();
-			expect(res).toEqual("empty");
+			try {
+				const res = await productsClass.index();
+				expect(res).toEqual("empty");
+			} catch (error) {
+				fail(error);
+			}
 		});
 
 		//two posts tests
 		it("creates the first product", async () => {
-			const product1 = await productsClass.create(productTest);
+			try {
+				const product1 = await productsClass.create(productTest);
 
-			expect(200);
-			expect(product1).toEqual("product 1 has been created");
+				expect(200);
+				expect(product1).toEqual("product 1 has been created");
+			} catch (error) {
+				fail(error);
+			}
 		});
 
 		it("creates another product", async () => {
-			const product2 = await productsClass.create(productSecTest);
+			try {
+				const product2 = await productsClass.create(productSecTest);
 
-			expect(200);
-			expect(product2).toEqual("product 2 has been created");
+				expect(200);
+				expect(product2).toEqual("product 2 has been created");
+			} catch (error) {
+				fail(error);
+			}
 		});
 
 		//show test
 		it("show product at id chosen which is 2", async () => {
-			const product = await productsClass.show(2);
-			expect((product as Product).id).toEqual(2);
+			try {
+				const product = await productsClass.show(2);
+				expect((product as Product).id).toEqual(2);
+			} catch (error) {
+				fail(error);
+			}
 		});
 
 		//update tests
@@ -81,15 +97,19 @@ describe("Suite to test products model functions \n", () => {
 
 				const [nameExist, priceExist, categoryExist] = [1, 1, 1];
 
-				const product = await productsClass.update(
-					nameExist,
-					priceExist,
-					categoryExist,
-					productTest,
-					2,
-				);
+				try {
+					const product = await productsClass.update(
+						nameExist,
+						priceExist,
+						categoryExist,
+						productTest,
+						2,
+					);
 
-				expect(product).toEqual("product 2 updated successfully with name ,price and category");
+					expect(product).toEqual("product 2 updated successfully with name ,price and category");
+				} catch (error) {
+					fail(error);
+				}
 			});
 
 			it("should update product name and price only", async () => {
@@ -100,15 +120,19 @@ describe("Suite to test products model functions \n", () => {
 
 				const [nameExist, priceExist, categoryExist] = [1, 1, 0];
 
-				const product = await productsClass.update(
-					nameExist,
-					priceExist,
-					categoryExist,
-					productTest,
-					2,
-				);
+				try {
+					const product = await productsClass.update(
+						nameExist,
+						priceExist,
+						categoryExist,
+						productTest,
+						2,
+					);
 
-				expect(product).toEqual("product 2 updated successfully with name and price");
+					expect(product).toEqual("product 2 updated successfully with name and price");
+				} catch (error) {
+					fail(error);
+				}
 			});
 
 			it("should update price and category only", async () => {
@@ -119,15 +143,19 @@ describe("Suite to test products model functions \n", () => {
 
 				const [nameExist, priceExist, categoryExist] = [0, 1, 1];
 
-				const product = await productsClass.update(
-					nameExist,
-					priceExist,
-					categoryExist,
-					productTest,
-					1,
-				);
+				try {
+					const product = await productsClass.update(
+						nameExist,
+						priceExist,
+						categoryExist,
+						productTest,
+						1,
+					);
 
-				expect(product).toEqual("product 1 updated successfully with price and category");
+					expect(product).toEqual("product 1 updated successfully with price and category");
+				} catch (error) {
+					fail(error);
+				}
 			});
 
 			it("should update name and category only", async () => {
@@ -138,29 +166,41 @@ describe("Suite to test products model functions \n", () => {
 
 				const [nameExist, priceExist, categoryExist] = [1, 0, 1];
 
-				const product = await productsClass.update(
-					nameExist,
-					priceExist,
-					categoryExist,
-					productTest,
-					1,
-				);
+				try {
+					const product = await productsClass.update(
+						nameExist,
+						priceExist,
+						categoryExist,
+						productTest,
+						1,
+					);
 
-				expect(product).toEqual("product 1 updated successfully with name and category");
+					expect(product).toEqual("product 1 updated successfully with name and category");
+				} catch (error) {
+					fail(error);
+				}
 			});
 		});
 
 		it("should return products from one category", async () => {
-			//value gotten from update tests
-			const product = await productsClass.sortByCategory("Plane fuel");
+			try {
+				//value gotten from update tests
+				const product = await productsClass.sortByCategory("Plane fuel");
 
-			//should return one product with id 1
-			expect((product[0] as Product).id).toEqual(1);
+				//should return one product with id 1
+				expect((product[0] as Product).id).toEqual(1);
+			} catch (error) {
+				fail(error);
+			}
 		});
 
 		it("should delete product", async () => {
-			const product = await productsClass.delete(1);
-			expect(product).toEqual("product 1 deleted successfully");
+			try {
+				const product = await productsClass.delete(1);
+				expect(product).toEqual("product 1 deleted successfully");
+			} catch (error) {
+				fail(error);
+			}
 		});
 	});
 });

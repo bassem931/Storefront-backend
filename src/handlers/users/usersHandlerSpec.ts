@@ -53,15 +53,23 @@ describe("users Handlers testbench \n", () => {
 	// });
 
 	it("create a user ", async () => {
-		const user1 = await supertest(app).post("/users").send(userTest).expect(200);
+		try {
+			const user1 = await supertest(app).post("/users").send(userTest).expect(200);
 
-		activeTokenUser1 = user1.body;
+			activeTokenUser1 = user1.body;
+		} catch (error) {
+			fail(error);
+		}
 	});
 
 	it("create a second user ", async () => {
-		const user2 = await supertest(app).post("/users").send(userTest2).expect(200);
+		try {
+			const user2 = await supertest(app).post("/users").send(userTest2).expect(200);
 
-		activeTokenUser2 = user2.body;
+			activeTokenUser2 = user2.body;
+		} catch (error) {
+			fail(error);
+		}
 	});
 
 	it("gets user 1 data without token ", async () => {
@@ -76,21 +84,25 @@ describe("users Handlers testbench \n", () => {
 	// console.log(activeToken);
 
 	it("gets user 1 data with token ", async () => {
-		const user1 = await supertest(app)
-			.get("/users/1")
-			.set("Authorization", `Bearer ${activeTokenUser1}`)
+		try {
+			const user1 = await supertest(app)
+				.get("/users/1")
+				.set("Authorization", `Bearer ${activeTokenUser1}`)
 
-			.expect(200);
+				.expect(200);
 
-		//slice array to remove id which is the first item
-		const cleanUser = Object.values(user1.body).slice(1, 4);
+			//slice array to remove id which is the first item
+			const cleanUser = Object.values(user1.body).slice(1, 4);
 
-		const { first_name, last_name, username } = userTest;
+			const { first_name, last_name, username } = userTest;
 
-		//compare all values to each other except id
-		expect(cleanUser).toEqual(Object.values({ first_name, last_name, username }));
-		// compare id
-		expect(user1.body.id).toEqual(1);
+			//compare all values to each other except id
+			expect(cleanUser).toEqual(Object.values({ first_name, last_name, username }));
+			// compare id
+			expect(user1.body.id).toEqual(1);
+		} catch (error) {
+			fail(error);
+		}
 	});
 
 	it("edits user 1 data with token ", async () => {
@@ -99,21 +111,29 @@ describe("users Handlers testbench \n", () => {
 			last_name: "dako",
 		};
 
-		const user1 = await supertest(app)
-			.patch("/users/1")
-			.set("Authorization", `Bearer ${activeTokenUser1}`)
-			.send(userEdit)
-			.expect(200);
+		try {
+			const user1 = await supertest(app)
+				.patch("/users/1")
+				.set("Authorization", `Bearer ${activeTokenUser1}`)
+				.send(userEdit)
+				.expect(200);
 
-		expect(user1.body).toEqual("user 1 updated successfully with first_name and last_name");
+			expect(user1.body).toEqual("user 1 updated successfully with first_name and last_name");
+		} catch (error) {
+			fail(error);
+		}
 	});
 
 	it("deletes user 1 data with token ", async () => {
-		const user1 = await supertest(app)
-			.delete("/users/1")
-			.set("Authorization", `Bearer ${activeTokenUser1}`)
-			.expect(200);
+		try {
+			const user1 = await supertest(app)
+				.delete("/users/1")
+				.set("Authorization", `Bearer ${activeTokenUser1}`)
+				.expect(200);
 
-		expect(user1.body).toEqual("user 1 deleted successfully");
+			expect(user1.body).toEqual("user 1 deleted successfully");
+		} catch (error) {
+			fail(error);
+		}
 	});
 });

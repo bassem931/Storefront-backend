@@ -59,67 +59,95 @@ describe("Suite to test orders model functions\n", () => {
 
 		//empty index test should return empty
 		it("checks array is empty using index", async () => {
-			const res = await ordersClass.index();
-			expect(res).toEqual("empty");
+			try {
+				const res = await ordersClass.index();
+				expect(res).toEqual("empty");
+			} catch (error) {
+				fail(error);
+			}
 		});
 
 		//two posts tests
 		it("creates the first order", async () => {
-			//user must exist before creating order
-			await usersClass.create(userTest);
-			const order1 = await ordersClass.create(orderTest);
+			try {
+				//user must exist before creating order
+				await usersClass.create(userTest);
+				const order1 = await ordersClass.create(orderTest);
 
-			//use object.values to avoid key naming differences
-			//slice array to remove id which is the first item
-			const cleanOrder = Object.values(order1).slice(1);
-			//compare all values to each other except id
-			expect(cleanOrder).toEqual(Object.values(orderTest));
-			// compare id
-			expect((order1 as Order).id).toEqual(1);
+				//use object.values to avoid key naming differences
+				//slice array to remove id which is the first item
+				const cleanOrder = Object.values(order1).slice(1);
+				//compare all values to each other except id
+				expect(cleanOrder).toEqual(Object.values(orderTest));
+				// compare id
+				expect((order1 as Order).id).toEqual(1);
+			} catch (error) {
+				fail(error);
+			}
 		});
 
 		it("creates another order", async () => {
-			//user must exist before creating order
-			await usersClass.create(userSecTest);
-			const order2 = await ordersClass.create(orderSecTest);
+			try {
+				//user must exist before creating order
+				await usersClass.create(userSecTest);
+				const order2 = await ordersClass.create(orderSecTest);
 
-			//use object.values to avoid key naming differences
-			//slice array to remove id which is the first item
-			const cleanOrder = Object.values(order2).slice(1);
-			//compare all values to each other except id
-			expect(cleanOrder).toEqual(Object.values(orderSecTest));
-			// compare id
-			expect((order2 as Order).id).toEqual(2);
+				//use object.values to avoid key naming differences
+				//slice array to remove id which is the first item
+				const cleanOrder = Object.values(order2).slice(1);
+				//compare all values to each other except id
+				expect(cleanOrder).toEqual(Object.values(orderSecTest));
+				// compare id
+				expect((order2 as Order).id).toEqual(2);
+			} catch (error) {
+				fail(error);
+			}
 		});
 
 		//show test
 		it("show order at id chosen which is 2", async () => {
-			const order = await ordersClass.show(2);
-			expect((order as Order).id).toEqual(2);
+			try {
+				const order = await ordersClass.show(2);
+				expect((order as Order).id).toEqual(2);
+			} catch (error) {
+				fail(error);
+			}
 		});
 
 		//update tests
 		it("should update order 2 to active", async () => {
-			const order = await ordersClass.update(order_status_type.active, 2);
+			try {
+				const order = await ordersClass.update(order_status_type.active, 2);
 
-			//compare order status
-			expect((order as Order).order_status).toEqual(order_status_type.active);
-			// compare id
-			expect((order as Order).id).toEqual(2);
+				//compare order status
+				expect((order as Order).order_status).toEqual(order_status_type.active);
+				// compare id
+				expect((order as Order).id).toEqual(2);
+			} catch (error) {
+				fail(error);
+			}
 		});
 
 		it("should update order 1 to completed", async () => {
-			const order = await ordersClass.update(order_status_type.completed, 1);
+			try {
+				const order = await ordersClass.update(order_status_type.completed, 1);
 
-			//compare order status
-			expect((order as Order).order_status).toEqual(order_status_type.completed);
-			// compare id
-			expect((order as Order).id).toEqual(1);
+				//compare order status
+				expect((order as Order).order_status).toEqual(order_status_type.completed);
+				// compare id
+				expect((order as Order).id).toEqual(1);
+			} catch (error) {
+				fail(error);
+			}
 		});
 
 		it("should delete order", async () => {
-			const order = await ordersClass.delete(1);
-			expect(order).toEqual(`order 1 deleted successfully for user 1`);
+			try {
+				const order = await ordersClass.delete(1);
+				expect(order).toEqual(`order 1 deleted successfully for user 1`);
+			} catch (error) {
+				fail(error);
+			}
 		});
 	});
 });

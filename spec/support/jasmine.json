@@ -1,6 +1,6 @@
 {
 	"spec_dir": "/dist",
-	"spec_files": ["src/handlers/services_Routes/**/*[sS]pec.js"],
+	"spec_files": ["src/**/*[sS]pec.js"],
 	"helpers": ["spec/helpers/**/*.js"],
 	"reporters": [
 		{

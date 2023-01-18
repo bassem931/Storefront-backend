@@ -68,21 +68,25 @@ describe("test order Services", () => {
 	});
 
 	it("get active orders for user 1", async () => {
-		//create user
-		await usersClass.create(userTest);
+		try {
+			//create user
+			await usersClass.create(userTest);
 
-		//create product
-		await productsClass.create(productTest);
+			//create product
+			await productsClass.create(productTest);
 
-		//create second product
-		await productsClass.create(productSecTest);
+			//create second product
+			await productsClass.create(productSecTest);
 
-		//create order
-		await ordersClass.create(orderTest);
+			//create order
+			await ordersClass.create(orderTest);
 
-		//add products to order
-		await ordersProductsClass.addProduct(productOrderDetails);
-		await ordersProductsClass.addProduct(secProductOrderDetails);
+			//add products to order
+			await ordersProductsClass.addProduct(productOrderDetails);
+			await ordersProductsClass.addProduct(secProductOrderDetails);
+		} catch (error) {
+			fail(error);
+		}
 
 		const activeOrders = await orderServices.activeOrders(1);
 

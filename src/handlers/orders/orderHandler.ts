@@ -1,5 +1,10 @@
 import express, { Request, Response } from "express";
-import { authenticate, authenticateOrder, getToken } from "../../middlewares/authUser";
+import {
+	authenticate,
+	authenticateOrder,
+	authenticateUser,
+	getToken,
+} from "../../middlewares/authUser";
 import { ordersClass, Order, order_status_type } from "../../models/orders/orderModel";
 import jwt from "jsonwebtoken";
 import { tokenPass } from "../../../Config/envConfig";
@@ -8,7 +13,7 @@ import { tokenPass } from "../../../Config/envConfig";
 export const orderhandler = (app: express.Application) => {
 	app.get("/orders", authenticate, index); //should be admin
 	app.get("/users/:userId/order/:orderId", authenticateOrder, show);
-	app.post("/users/:userId/order/", create);
+	app.post("/users/:userId/order/", authenticateUser, create);
 	app.patch("/users/:userId/order/:orderId", authenticateOrder, update);
 	app.delete("/users/:userId/order/:orderId", authenticateOrder, remove);
 };

@@ -8,6 +8,7 @@ export class productServices {
 
 		const sql =
 			"SELECT product_id,COUNT(product_id) AS times_ordered ,SUM(quantity) AS amount_order FROM products INNER JOIN order_products ON products.id = order_products.product_id GROUP BY product_id ORDER BY times_ordered DESC, amount_order DESC;";
+
 		const result = await conn.query(sql);
 
 		conn.release();

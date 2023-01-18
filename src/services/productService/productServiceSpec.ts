@@ -151,20 +151,26 @@ describe("test order Services", () => {
 		await ordersProductsClass.addProduct(secProductSecOrderDetails);
 		await ordersProductsClass.addProduct(secProductFifthOrderDetails);
 
-		const fiveMostPopular = await productServices.fiveMostPopular();
+		let fiveMostPopular;
+
+		try {
+			fiveMostPopular = await productServices.fiveMostPopular();
+		} catch (error) {
+			fail(error);
+		}
 
 		//these values were retrieved by manually testing and analyzing the results
 		//this is because the data created here had several factors
 
 		//2 is the most popular it was ordered in 2 orders with a quantity of 26
-		expect(fiveMostPopular[0].product_id).toEqual(2);
+		expect((fiveMostPopular as string | any[])[0].product_id).toEqual(2);
 
 		//1 is the second most popular it was ordered in 2 orders with a quantity of 21
-		expect(fiveMostPopular[1].product_id).toEqual(1);
+		expect((fiveMostPopular as string | any[])[1].product_id).toEqual(1);
 		//4 is the third most popular it was ordered in 1 order with a quantity of 50
 		//although 50 is a relatively large quantity it does not reflect popularity always
-		expect(fiveMostPopular[2].product_id).toEqual(4);
+		expect((fiveMostPopular as string | any[])[2].product_id).toEqual(4);
 		//5 is the fourth most popular it was ordered in 1 order with a quantity of 1
-		expect(fiveMostPopular[3].product_id).toEqual(5);
+		expect((fiveMostPopular as string | any[])[3].product_id).toEqual(5);
 	});
 });

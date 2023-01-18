@@ -162,6 +162,7 @@ const create = async (req: Request, res: Response): Promise<express.Response> =>
 	};
 
 	let createCall;
+
 	//call model function
 	try {
 		createCall = await productsClass.create(product);

@@ -46,44 +46,60 @@ describe("Suite to test users model functions\n", () => {
 
 		//empty index test
 		it("checks array is empty using index", async () => {
-			const res = await usersClass.index();
-			expect(res).toEqual("empty");
+			try {
+				const res = await usersClass.index();
+				expect(res).toEqual("empty");
+			} catch (error) {
+				fail(error);
+			}
 		});
 
 		//two posts tests
 		it("creates the first user", async () => {
-			const user1 = await usersClass.create(userTest);
-			//use object.values to avoid key naming differences
+			try {
+				const user1 = await usersClass.create(userTest);
+				//use object.values to avoid key naming differences
 
-			//slice array to remove id which is the first item
-			const cleanUser = Object.values(user1).slice(1, 4);
+				//slice array to remove id which is the first item
+				const cleanUser = Object.values(user1).slice(1, 4);
 
-			const { first_name, last_name, username } = userTest;
+				const { first_name, last_name, username } = userTest;
 
-			//compare all values to each other except id
-			expect(cleanUser).toEqual(Object.values({ first_name, last_name, username }));
-			// compare id
-			expect((user1 as User).id).toEqual(1);
+				//compare all values to each other except id
+				expect(cleanUser).toEqual(Object.values({ first_name, last_name, username }));
+				// compare id
+				expect((user1 as User).id).toEqual(1);
+			} catch (error) {
+				fail(error);
+			}
 		});
 
 		it("creates another user", async () => {
-			const user2 = await usersClass.create(userSecTest);
-			//use object.values to avoid key naming differences
+			try {
+				const user2 = await usersClass.create(userSecTest);
+				//use object.values to avoid key naming differences
 
-			//slice array to remove id which is the first item
-			const cleanUser = Object.values(user2).slice(1, 4);
+				//slice array to remove id which is the first item
+				const cleanUser = Object.values(user2).slice(1, 4);
 
-			const { first_name, last_name, username } = userSecTest;
-			//compare all values to each other except id and password
-			expect(cleanUser).toEqual(Object.values({ first_name, last_name, username }));
-			// compare id
-			expect((user2 as User).id).toEqual(2);
+				const { first_name, last_name, username } = userSecTest;
+				//compare all values to each other except id and password
+				expect(cleanUser).toEqual(Object.values({ first_name, last_name, username }));
+				// compare id
+				expect((user2 as User).id).toEqual(2);
+			} catch (error) {
+				fail(error);
+			}
 		});
 
 		//show test
 		it("show user at id chosen which is 2", async () => {
-			const user = await usersClass.show(2);
-			expect((user as User).id).toEqual(2);
+			try {
+				const user = await usersClass.show(2);
+				expect((user as User).id).toEqual(2);
+			} catch (error) {
+				fail(error);
+			}
 		});
 
 		//update tests
@@ -98,18 +114,22 @@ describe("Suite to test users model functions\n", () => {
 
 				const [firstNameExist, lastNameExist, usernameExist, passwordExist] = [1, 1, 1, 1];
 
-				const user = await usersClass.update(
-					firstNameExist,
-					lastNameExist,
-					usernameExist,
-					passwordExist,
-					userTest,
-					2,
-				);
+				try {
+					const user = await usersClass.update(
+						firstNameExist,
+						lastNameExist,
+						usernameExist,
+						passwordExist,
+						userTest,
+						2,
+					);
 
-				expect(user).toEqual(
-					"user 2 updated successfully with first_name ,last_name ,username and password",
-				);
+					expect(user).toEqual(
+						"user 2 updated successfully with first_name ,last_name ,username and password",
+					);
+				} catch (error) {
+					fail(error);
+				}
 			});
 
 			it("should update user first and last name only", async () => {
@@ -120,16 +140,20 @@ describe("Suite to test users model functions\n", () => {
 
 				const [firstNameExist, lastNameExist, usernameExist, passwordExist] = [1, 1, 0, 0];
 
-				const user = await usersClass.update(
-					firstNameExist,
-					lastNameExist,
-					usernameExist,
-					passwordExist,
-					userTest,
-					2,
-				);
+				try {
+					const user = await usersClass.update(
+						firstNameExist,
+						lastNameExist,
+						usernameExist,
+						passwordExist,
+						userTest,
+						2,
+					);
 
-				expect(user).toEqual("user 2 updated successfully with first_name and last_name");
+					expect(user).toEqual("user 2 updated successfully with first_name and last_name");
+				} catch (error) {
+					fail(error);
+				}
 			});
 
 			it("should update username and password only", async () => {
@@ -140,16 +164,20 @@ describe("Suite to test users model functions\n", () => {
 
 				const [firstNameExist, lastNameExist, usernameExist, passwordExist] = [0, 0, 1, 1];
 
-				const user = await usersClass.update(
-					firstNameExist,
-					lastNameExist,
-					usernameExist,
-					passwordExist,
-					userTest,
-					1,
-				);
+				try {
+					const user = await usersClass.update(
+						firstNameExist,
+						lastNameExist,
+						usernameExist,
+						passwordExist,
+						userTest,
+						1,
+					);
 
-				expect(user).toEqual("user 1 updated successfully with username and password");
+					expect(user).toEqual("user 1 updated successfully with username and password");
+				} catch (error) {
+					fail(error);
+				}
 			});
 
 			it("should update firstname and password only", async () => {
@@ -160,22 +188,30 @@ describe("Suite to test users model functions\n", () => {
 
 				const [firstNameExist, lastNameExist, usernameExist, passwordExist] = [1, 0, 0, 1];
 
-				const user = await usersClass.update(
-					firstNameExist,
-					lastNameExist,
-					usernameExist,
-					passwordExist,
-					userTest,
-					1,
-				);
+				try {
+					const user = await usersClass.update(
+						firstNameExist,
+						lastNameExist,
+						usernameExist,
+						passwordExist,
+						userTest,
+						1,
+					);
 
-				expect(user).toEqual("user 1 updated successfully with first_name and password");
+					expect(user).toEqual("user 1 updated successfully with first_name and password");
+				} catch (error) {
+					fail(error);
+				}
 			});
 		});
 
 		it("should delete user", async () => {
-			const user = await usersClass.delete(1);
-			expect(user).toEqual("user 1 deleted successfully");
+			try {
+				const user = await usersClass.delete(1);
+				expect(user).toEqual("user 1 deleted successfully");
+			} catch (error) {
+				fail(error);
+			}
 		});
 	});
 });

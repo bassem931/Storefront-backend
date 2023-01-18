@@ -48,7 +48,12 @@ const getToken = async (req: Request): Promise<string | jwt.JwtPayload> => {
 //this function to authenticate the token is valid
 const authenticate = async (req: Request, res: Response, next: NextFunction) => {
 	//get token from helper
-	const token = await getToken(req);
+	let token;
+	try {
+		token = await getToken(req);
+	} catch (err) {
+		res.status(400).send(token);
+	}
 	if (typeof token === "string") {
 		return res.status(401).json(`${token}`);
 	}
@@ -59,7 +64,12 @@ const authenticate = async (req: Request, res: Response, next: NextFunction) => 
 //this function to authenticate the token is valid and user id is the same
 const authenticateUser = async (req: Request, res: Response, next: NextFunction) => {
 	//verify token exists
-	const tokenInfo = await getToken(req);
+	let tokenInfo;
+	try {
+		tokenInfo = await getToken(req);
+	} catch (err) {
+		res.status(400).send(tokenInfo);
+	}
 
 	if (typeof tokenInfo === "string") {
 		return res.status(401).json(`${tokenInfo}`);
@@ -75,11 +85,11 @@ const authenticateUser = async (req: Request, res: Response, next: NextFunction)
 	}
 
 	//check user id in token
-	if (tokenInfo.user_id === undefined) {
+	if ((tokenInfo as jwt.JwtPayload).user_id === undefined) {
 		return res.status(404).json("user id not found in token");
 	}
 
-	const tokenUserID = tokenInfo.user_id;
+	const tokenUserID = (tokenInfo as jwt.JwtPayload).user_id;
 
 	//check user is same user id
 	if (reqUserId == tokenUserID) {
@@ -92,7 +102,12 @@ const authenticateUser = async (req: Request, res: Response, next: NextFunction)
 //this function to authenticate the token is valid and user id is the same
 const authenticateOrder = async (req: Request, res: Response, next: NextFunction) => {
 	//verify token exists
-	const tokenInfo = await getToken(req);
+	let tokenInfo;
+	try {
+		tokenInfo = await getToken(req);
+	} catch (err) {
+		res.status(400).send(tokenInfo);
+	}
 
 	if (typeof tokenInfo === "string") {
 		return res.status(401).json(`${tokenInfo}`);
@@ -116,20 +131,20 @@ const authenticateOrder = async (req: Request, res: Response, next: NextFunction
 	}
 
 	//get user id from token
-	if (tokenInfo.user_id === undefined) {
+	if ((tokenInfo as jwt.JwtPayload).user_id === undefined) {
 		return res.status(404).json("user id not found in token");
 	}
-	const tokenUserID = tokenInfo.user_id;
+	const tokenUserID = (tokenInfo as jwt.JwtPayload).user_id;
 
 	//get order id from token
-	if (tokenInfo.order_id === undefined) {
+	if ((tokenInfo as jwt.JwtPayload).order_id === undefined) {
 		//creating active order so pass
 		next();
 	}
-	const tokenOrderid = tokenInfo.order_id;
+	const tokenOrderid = (tokenInfo as jwt.JwtPayload).order_id;
 
 	//order id defined so order status must be defined
-	const orderStatus: order_status_type = tokenInfo.order_status;
+	const orderStatus: order_status_type = (tokenInfo as jwt.JwtPayload).order_status;
 
 	//check user is same user id
 	if (parseInt(reqUserId) === tokenUserID) {
@@ -166,7 +181,12 @@ const authenticateOrder = async (req: Request, res: Response, next: NextFunction
 // similar to authenticateOrder but with less conditions
 const authenticateOrderProduct = async (req: Request, res: Response, next: NextFunction) => {
 	//verify token exists
-	const tokenInfo = await getToken(req);
+	let tokenInfo;
+	try {
+		tokenInfo = await getToken(req);
+	} catch (err) {
+		res.status(400).send(tokenInfo);
+	}
 
 	if (typeof tokenInfo === "string") {
 		return res.status(401).json(`${tokenInfo}`);
@@ -188,20 +208,20 @@ const authenticateOrderProduct = async (req: Request, res: Response, next: NextF
 		return checkOrderId as Response;
 	}
 
-	if (tokenInfo.user_id === undefined) {
+	if ((tokenInfo as jwt.JwtPayload).user_id === undefined) {
 		return res.status(404).json("user id not found in token");
 	}
 
-	const tokenUserID = tokenInfo.user_id;
+	const tokenUserID = (tokenInfo as jwt.JwtPayload).user_id;
 
-	if (tokenInfo.order_id === undefined) {
+	if ((tokenInfo as jwt.JwtPayload).order_id === undefined) {
 		//no order id create order first
 		return res.status(404).json("an order must be created first");
 	}
-	const tokenOrderid = tokenInfo.order_id;
+	const tokenOrderid = (tokenInfo as jwt.JwtPayload).order_id;
 
 	//order id defined so order status must be defined
-	const orderStatus: order_status_type = tokenInfo.order_status;
+	const orderStatus: order_status_type = (tokenInfo as jwt.JwtPayload).order_status;
 
 	//check user is same user id
 	if (parseInt(reqUserId) === tokenUserID) {

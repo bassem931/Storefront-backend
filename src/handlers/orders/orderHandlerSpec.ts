@@ -38,57 +38,73 @@ describe("orders Handlers testbench \n", () => {
 	let activeTokenOrder2: string | jwt.JwtPayload;
 
 	it("get all orders should return empty", async () => {
-		//create user for the rest of the tests
-		activeTokenUser1 = await createUser(userTest);
+		try {
+			//create user for the rest of the tests
+			activeTokenUser1 = await createUser(userTest);
 
-		//call supertest to fetch url
-		const order = await supertest(app)
-			.get("/orders")
-			.expect(404)
-			.set("Authorization", `Bearer ${activeTokenUser1}`);
+			//call supertest to fetch url
+			const order = await supertest(app)
+				.get("/orders")
+				.expect(404)
+				.set("Authorization", `Bearer ${activeTokenUser1}`);
 
-		expect(order.body).toEqual("Orders not found in database ,database is probably empty");
+			expect(order.body).toEqual("Orders not found in database ,database is probably empty");
+		} catch (error) {
+			fail(error);
+		}
 	});
 
 	it("create first order", async () => {
-		const order = await supertest(app)
-			.post("/users/1/order/")
-			.send(orderTest)
-			.set("Authorization", `Bearer ${activeTokenUser1}`);
+		try {
+			const order = await supertest(app)
+				.post("/users/1/order/")
+				.send(orderTest)
+				.set("Authorization", `Bearer ${activeTokenUser1}`);
 
-		expect(200);
+			expect(200);
 
-		activeTokenOrder1 = order.body;
+			activeTokenOrder1 = order.body;
 
-		//jwt always start with those three letters
-		expect((order.body as string).charAt(0)).toEqual("e");
-		expect((order.body as string).charAt(1)).toEqual("y");
-		expect((order.body as string).charAt(2)).toEqual("J");
+			//jwt always start with those three letters
+			expect((order.body as string).charAt(0)).toEqual("e");
+			expect((order.body as string).charAt(1)).toEqual("y");
+			expect((order.body as string).charAt(2)).toEqual("J");
+		} catch (error) {
+			fail(error);
+		}
 	});
 
 	it("create second order", async () => {
-		const order = await supertest(app)
-			.post("/users/1/order/")
-			.send(orderTest)
-			.set("Authorization", `Bearer ${activeTokenUser1}`);
+		try {
+			const order = await supertest(app)
+				.post("/users/1/order/")
+				.send(orderTest)
+				.set("Authorization", `Bearer ${activeTokenUser1}`);
 
-		expect(200);
+			expect(200);
 
-		activeTokenOrder2 = order.body;
+			activeTokenOrder2 = order.body;
 
-		//jwt always start with those three letters
-		expect((order.body as string).charAt(0)).toEqual("e");
-		expect((order.body as string).charAt(1)).toEqual("y");
-		expect((order.body as string).charAt(2)).toEqual("J");
+			//jwt always start with those three letters
+			expect((order.body as string).charAt(0)).toEqual("e");
+			expect((order.body as string).charAt(1)).toEqual("y");
+			expect((order.body as string).charAt(2)).toEqual("J");
+		} catch (error) {
+			fail(error);
+		}
 	});
 
 	it("get second order", async () => {
-		const order = await supertest(app)
-			.get("/users/1/order/2")
-			.set("Authorization", `Bearer ${activeTokenOrder2}`);
+		try {
+			const order = await supertest(app)
+				.get("/users/1/order/2")
+				.set("Authorization", `Bearer ${activeTokenOrder2}`);
 
-		expect(200);
-		expect((order.body as Order).id).toEqual(2);
+			expect(200);
+			expect((order.body as Order).id).toEqual(2);
+		} catch (error) {
+			fail(error);
+		}
 	});
 
 	it("edit second order", async () => {
@@ -96,25 +112,33 @@ describe("orders Handlers testbench \n", () => {
 			order_status: order_status_type.active,
 		};
 
-		const order = await supertest(app)
-			.patch("/users/1/order/2")
-			.send(orderEdit)
-			.set("Authorization", `Bearer ${activeTokenOrder2}`);
+		try {
+			const order = await supertest(app)
+				.patch("/users/1/order/2")
+				.send(orderEdit)
+				.set("Authorization", `Bearer ${activeTokenOrder2}`);
 
-		expect(200);
+			expect(200);
 
-		//jwt always start with those three letters
-		expect((order.body as string).charAt(0)).toEqual("e");
-		expect((order.body as string).charAt(1)).toEqual("y");
-		expect((order.body as string).charAt(2)).toEqual("J");
+			//jwt always start with those three letters
+			expect((order.body as string).charAt(0)).toEqual("e");
+			expect((order.body as string).charAt(1)).toEqual("y");
+			expect((order.body as string).charAt(2)).toEqual("J");
+		} catch (error) {
+			fail(error);
+		}
 	});
 
 	it("delete first order", async () => {
-		const order = await supertest(app)
-			.delete("/users/1/order/1")
-			.set("Authorization", `Bearer ${activeTokenOrder1}`);
+		try {
+			const order = await supertest(app)
+				.delete("/users/1/order/1")
+				.set("Authorization", `Bearer ${activeTokenOrder1}`);
 
-		expect(200);
-		expect(order.body).toEqual("order 1 deleted successfully for user 1");
+			expect(200);
+			expect(order.body).toEqual("order 1 deleted successfully for user 1");
+		} catch (error) {
+			fail(error);
+		}
 	});
 });

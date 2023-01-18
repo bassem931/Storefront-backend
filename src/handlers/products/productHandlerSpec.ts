@@ -41,47 +41,63 @@ describe("products Handlers testbench \n", () => {
 	let activeTokenUser1: string | jwt.JwtPayload;
 
 	it("get all products should return empty ", async () => {
-		//create user for the rest of the tests
-		activeTokenUser1 = await createUser(userTest);
+		try {
+			//create user for the rest of the tests
+			activeTokenUser1 = await createUser(userTest);
 
-		//call supertest to fetch url
-		const product1 = await supertest(app).get("/products").expect(404);
+			//call supertest to fetch url
+			const product1 = await supertest(app).get("/products").expect(404);
 
-		expect(product1.body as unknown as string).toEqual(
-			"Products not found in database ,database is probably empty",
-		);
+			expect(product1.body as unknown as string).toEqual(
+				"Products not found in database ,database is probably empty",
+			);
+		} catch (error) {
+			fail(error);
+		}
 	});
 
 	it("create first product ", async () => {
-		//call supertest to fetch url
-		const product = await supertest(app)
-			.post("/products")
-			.send(productTest)
-			.set("Authorization", `Bearer ${activeTokenUser1}`);
+		try {
+			//call supertest to fetch url
+			const product = await supertest(app)
+				.post("/products")
+				.send(productTest)
+				.set("Authorization", `Bearer ${activeTokenUser1}`);
 
-		expect(200);
-		expect(product.body).toEqual("product 1 has been created");
+			expect(200);
+			expect(product.body).toEqual("product 1 has been created");
+		} catch (error) {
+			fail(error);
+		}
 	});
 
 	it("create second product", async () => {
-		//call supertest to fetch url
-		const product = await supertest(app)
-			.post("/products")
-			.send(productTest2)
-			.set("Authorization", `Bearer ${activeTokenUser1}`);
+		try {
+			//call supertest to fetch url
+			const product = await supertest(app)
+				.post("/products")
+				.send(productTest2)
+				.set("Authorization", `Bearer ${activeTokenUser1}`);
 
-		expect(200);
-		expect(product.body).toEqual("product 2 has been created");
+			expect(200);
+			expect(product.body).toEqual("product 2 has been created");
+		} catch (error) {
+			fail(error);
+		}
 	});
 
 	it("get second product ", async () => {
-		//call supertest to fetch url
-		const product = await supertest(app)
-			.get("/products/2")
-			.set("Authorization", `Bearer ${activeTokenUser1}`);
+		try {
+			//call supertest to fetch url
+			const product = await supertest(app)
+				.get("/products/2")
+				.set("Authorization", `Bearer ${activeTokenUser1}`);
 
-		expect(200);
-		expect((product.body as Product).id).toEqual(2);
+			expect(200);
+			expect((product.body as Product).id).toEqual(2);
+		} catch (error) {
+			fail(error);
+		}
 	});
 
 	it("edit second product ", async () => {
@@ -91,23 +107,31 @@ describe("products Handlers testbench \n", () => {
 			price: 1851,
 		};
 
-		//call supertest to fetch url
-		const product = await supertest(app)
-			.patch("/products/2")
-			.send(productEdit)
-			.set("Authorization", `Bearer ${activeTokenUser1}`);
+		try {
+			//call supertest to fetch url
+			const product = await supertest(app)
+				.patch("/products/2")
+				.send(productEdit)
+				.set("Authorization", `Bearer ${activeTokenUser1}`);
 
-		expect(200);
-		expect(product.body).toEqual("product 2 updated successfully with name and price");
+			expect(200);
+			expect(product.body).toEqual("product 2 updated successfully with name and price");
+		} catch (error) {
+			fail(error);
+		}
 	});
 
 	it("delete first product ", async () => {
-		//call supertest to fetch url
-		const product = await supertest(app)
-			.delete("/products/1")
-			.set("Authorization", `Bearer ${activeTokenUser1}`);
+		try {
+			//call supertest to fetch url
+			const product = await supertest(app)
+				.delete("/products/1")
+				.set("Authorization", `Bearer ${activeTokenUser1}`);
 
-		expect(200);
-		expect(product.body).toEqual("product 1 deleted successfully");
+			expect(200);
+			expect(product.body).toEqual("product 1 deleted successfully");
+		} catch (error) {
+			fail(error);
+		}
 	});
 });

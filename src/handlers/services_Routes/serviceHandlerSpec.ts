@@ -15,10 +15,16 @@ const createUser = async (userTest: User): Promise<string | jwt.JwtPayload> => {
 };
 
 // helper functions
-const createOrder = async (orderTest: Order, userId: number): Promise<string | jwt.JwtPayload> => {
+const createOrder = async (
+	orderTest: Order,
+	userId: number,
+	token: string | jwt.JwtPayload,
+): Promise<string | jwt.JwtPayload> => {
+	const url = "/users/" + userId + "/order/";
 	const user = await supertest(app)
-		.post("/users/" + userId + "/order/")
-		.send(orderTest);
+		.post(url)
+		.send(orderTest)
+		.set("Authorization", `Bearer ${token}`);
 	const activeTokenOrder1 = user.body;
 	return activeTokenOrder1;
 };
@@ -73,51 +79,67 @@ describe("order-products Handlers testbench \n", () => {
 	it("creates all test units", async () => {
 		//////////////create test object////////////
 
-		//create user for the rest of the tests
-		activeTokenUser1 = await createUser(userTest);
+		try {
+			//create user for the rest of the tests
+			activeTokenUser1 = await createUser(userTest);
 
-		//create 2 products for the rest of the tests
-		const product1 = await supertest(app)
-			.post("/products")
-			.send(productTest)
-			.set("Authorization", `Bearer ${activeTokenUser1}`);
+			//create 2 products for the rest of the tests
+			await supertest(app)
+				.post("/products")
+				.send(productTest)
+				.set("Authorization", `Bearer ${activeTokenUser1}`);
 
-		const product2 = await supertest(app)
-			.post("/products")
-			.send(productTest2)
-			.set("Authorization", `Bearer ${activeTokenUser1}`);
+			await supertest(app)
+				.post("/products")
+				.send(productTest2)
+				.set("Authorization", `Bearer ${activeTokenUser1}`);
+		} catch (error) {
+			fail(error);
+		}
 
-		//create order for the rest of the tests
-		activeTokenOrder1 = await createOrder(orderTest, 1);
+		try {
+			//create order for the rest of the tests
+			activeTokenOrder1 = await createOrder(orderTest, 1, activeTokenUser1);
 
-		//add products to order
-		await supertest(app)
-			.post("/users/1/addtocart")
-			.send(productOrderDetails)
-			.set("Authorization", `Bearer ${activeTokenOrder1}`);
+			//add products to order
+			await supertest(app)
+				.post("/users/1/addtocart")
+				.send(productOrderDetails)
+				.set("Authorization", `Bearer ${activeTokenOrder1}`);
 
-		//add second product
-		await supertest(app)
-			.post("/users/1/addtocart")
-			.send(secProductOrderDetails)
-			.set("Authorization", `Bearer ${activeTokenOrder1}`);
+			//add second product
+			await supertest(app)
+				.post("/users/1/addtocart")
+				.send(secProductOrderDetails)
+				.set("Authorization", `Bearer ${activeTokenOrder1}`);
+		} catch (error) {
+			fail(error);
+		}
 		////////////////start test//////////////////
 		expect(200);
 	});
 
 	it("get active order products", async () => {
-		await supertest(app)
-			.get("/users/1/active")
-			.send(productOrderDetails)
-			.set("Authorization", `Bearer ${activeTokenUser1}`)
-			.expect(200);
+		try {
+			await supertest(app)
+				.get("/users/1/active")
+				.send(productOrderDetails)
+				.set("Authorization", `Bearer ${activeTokenUser1}`)
+				.expect(200);
+		} catch (error) {
+			fail(error);
+		}
 	});
 
 	it("get completed order products", async () => {
-		await supertest(app)
-			.get("/users/1/completed")
-			.set("Authorization", `Bearer ${activeTokenUser1}`)
-			.expect(404);
+		try {
+			await supertest(app)
+				.get("/users/1/completed")
+				.set("Authorization", `Bearer ${activeTokenUser1}`)
+				.expect(404);
+		} catch (error) {
+			fail(error);
+		}
 	});
 
 	it("get five most popular products", async () => {

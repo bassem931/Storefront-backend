@@ -71,27 +71,35 @@ describe("Suite to test orders-products model functions \n", () => {
 		};
 
 		it("gets all rows in order_products table", async () => {
-			const res = await ordersProductsClass.index();
-			expect(res).toEqual("empty");
+			try {
+				const res = await ordersProductsClass.index();
+				expect(res).toEqual("empty");
+			} catch (error) {
+				fail(error);
+			}
 		});
 
 		it("add new product to order", async () => {
 			//to add product to order an order and product must be created
 			//to create an order a user must be created
 
-			//create user
-			await usersClass.create(userTest);
+			try {
+				//create user
+				await usersClass.create(userTest);
 
-			//create product
-			await productsClass.create(productTest);
+				//create product
+				await productsClass.create(productTest);
 
-			//create order
-			await ordersClass.create(orderTest);
+				//create order
+				await ordersClass.create(orderTest);
 
-			//add product by calling addproduct function
-			const prodOrder = await ordersProductsClass.addProduct(productOrderDetails);
+				//add product by calling addproduct function
+				const prodOrder = await ordersProductsClass.addProduct(productOrderDetails);
 
-			expect(prodOrder).toEqual("product number 1 created in order 1");
+				expect(prodOrder).toEqual("product number 1 created in order 1");
+			} catch (error) {
+				fail(error);
+			}
 		});
 
 		it("add another product to same order", async () => {
@@ -100,61 +108,65 @@ describe("Suite to test orders-products model functions \n", () => {
 			//order and user already created
 
 			//create the second product
-			await productsClass.create(productSecTest);
+			try {
+				await productsClass.create(productSecTest);
 
-			//add product by calling addproduct function
-			const prodOrder = await ordersProductsClass.addProduct(secProductOrderDetails);
+				//add product by calling addproduct function
+				const prodOrder = await ordersProductsClass.addProduct(secProductOrderDetails);
 
-			expect(prodOrder).toEqual("product number 2 created in order 1");
+				expect(prodOrder).toEqual("product number 2 created in order 1");
+			} catch (error) {
+				fail(error);
+			}
 		});
 
 		it("get all products in a order by order_id ", async () => {
-			const productInOrder = await ordersProductsClass.getOrderProducts(1);
+			try {
+				const productInOrder = await ordersProductsClass.getOrderProducts(1);
 
-			//use object.values to avoid key naming differences
-			//slice array to remove id which is the first item
-			const cleanOrder = Object.values(productInOrder[0]).slice(1);
-			//compare all values to each other except id
-			expect(cleanOrder).toEqual(Object.values(productOrderDetails));
-			// compare id
-			expect((productInOrder[0] as OrdersProducts).id).toEqual(1);
+				//use object.values to avoid key naming differences
+				//slice array to remove id which is the first item
+				const cleanOrder = Object.values(productInOrder[0]).slice(1);
+				//compare all values to each other except id
+				expect(cleanOrder).toEqual(Object.values(productOrderDetails));
+				// compare id
+				expect((productInOrder[0] as OrdersProducts).id).toEqual(1);
 
-			//use object.values to avoid key naming differences
-			//slice array to remove id which is the first item
-			const cleanOrder2 = Object.values(productInOrder[1]).slice(1);
-			//compare all values to each other except id
-			expect(cleanOrder2).toEqual(Object.values(secProductOrderDetails));
-			// compare id
-			expect((productInOrder[1] as OrdersProducts).id).toEqual(2);
+				//use object.values to avoid key naming differences
+				//slice array to remove id which is the first item
+				const cleanOrder2 = Object.values(productInOrder[1]).slice(1);
+				//compare all values to each other except id
+				expect(cleanOrder2).toEqual(Object.values(secProductOrderDetails));
+				// compare id
+				expect((productInOrder[1] as OrdersProducts).id).toEqual(2);
+			} catch (error) {
+				fail(error);
+			}
 		});
 
 		it("add same order to test that it should update row ", async () => {
-			//add product by calling addproduct function
-			const prodOrder = await ordersProductsClass.addProduct(secProductOrderDetails);
+			try {
+				//add product by calling addproduct function
+				const prodOrder = await ordersProductsClass.addProduct(secProductOrderDetails);
 
-			expect(prodOrder).toEqual("product updated");
+				expect(prodOrder).toEqual("product updated");
+			} catch (error) {
+				fail(error);
+			}
 		});
 
-		// it("update first product quantity to 3", async () => {
-		// 	const productupdated: OrdersProducts = {
-		// 		order_id: 1,
-		// 		product_id: 1,
-		// 		quantity: 3,
-		// 	};
-
-		// 	const prodUpdate = await ordersProductsClass.updateProduct(productupdated);
-
-		// 	expect((prodUpdate as OrdersProducts).quantity).toEqual(productupdated.quantity);
-		// });
-
 		it("delete second product", async () => {
-			// call function to delete second product
-			const prodDelete = await ordersProductsClass.deleteProduct(
-				secProductOrderDetails.order_id,
-				secProductOrderDetails.product_id,
-			);
+			try {
+				// call function to delete second product
+				const prodDelete = await ordersProductsClass.deleteProduct(
+					secProductOrderDetails.order_id,
+					secProductOrderDetails.product_id,
+				);
 
-			expect(prodDelete).toEqual("product number 2 deleted from order 1");
+				expect(prodDelete).toEqual("product number 2 deleted from order 1");
+			} catch (error) {
+				fail(error);
+			}
 		});
 	});
 });

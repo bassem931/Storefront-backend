@@ -8,6 +8,7 @@ to set up the project A .env file must be created and added. This is made to ens
 These are the environment variables to be defined:
 port (number) = the port for the server to listen on if not defined 3000 will be used as a default option
 postgres_host = the host to run the database on . during development localhost is used
+port for database to run on = to configure the postgres database port. default is 5423 if another port used it will cause an error.To change port change postgres port on your system from postgres.conf
 postgres_db = the name of the database
 postgres_db_test = the name of the testing database
 postgres_user = the name of the postgres user which will be used to access and edit the database
@@ -20,6 +21,26 @@ tokenPass = the password used to verify tokens
 ### Package instructions
 
 all the dependencies required is defined in the package.json file. To install use 'npm install' or 'yarn install' if you have yarn installed globally
+
+### set up database
+
+#### To set up the database follow the steps below
+
+- connect to postgres user or any other superuser using (psql -U postgres)
+  -enter user password
+  **Database**
+- create 2 databases for the store one for test and one for dev. in the future another one can be created for production
+  use these sql queries:
+- CREATE DATABASE store_db;
+- CREATE DATABASE store_db_test;
+  **User**
+- create user using sql query (CREATE USER store_user WITH PASSWORD pass123;)
+- grant privileges for user to be able to access database
+  use these sql queries:
+- GRANT ALL PRIVILEGES ON DATABASE store_db TO store_user;
+- GRANT ALL PRIVILEGES ON DATABASE store_db_test TO store_user;
+
+After these steps the databases are created and a user with access to the database is created. The next step is to run the migrations using the script yarn migrate-up to create the tables. yarn migrate-down will drop all tables
 
 ## Required Technologies
 

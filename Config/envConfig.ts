@@ -5,6 +5,7 @@ dotenv.config();
 export const {
 	port,
 	postgres_host,
+	db_port,
 	postgres_db,
 	postgres_db_test,
 	postgres_user,

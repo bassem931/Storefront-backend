@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { authenticate } from "../../middlewares/authUser";
 import { productsClass, Product } from "../../models/products/productsModel";
 
-//handler fucntion
+//handler function
 export const producthandler = (app: express.Application) => {
 	app.get("/products", index); //anyone
 	app.get("/products/:productId", show); //anyone

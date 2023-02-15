@@ -5,7 +5,7 @@ import {
 	OrdersProducts,
 } from "../../models/order-products/order_productsModel";
 
-//handler fucntion
+//handler function
 export const order_productshandler = (app: express.Application) => {
 	app.get("/myOrder/products", authenticate, index); //should be admin
 	app.get("/myOrder/products/:orderId", authenticate, getOrderProducts); //should be admin
